@@ -22,19 +22,12 @@ import static android.os.SystemClock.sleep;
 
 public class mGLRenderer implements GLSurfaceView.Renderer {
     private static final String TAG = "MyGLRenderer";
-    //private Triangle mTriangle;
     private Square mSquare;
     private final float[] mMVPMatrix = new float[16];
-    //private final float[] mModelViewMatrix = new float[16];
     private final float[] mProjectionMatrix = new float[16];
     private final float[] mViewMatrix = new float[16];
-    private final float[] mRotationMatrix = new float[16];
-    private final  float[] mModelMatrix = new float[16];
-    // private final  float[] mModel1Matrix = new float[16];
-    //  private final  float[] mViewCopyMatrix = new float[16];
-    public float[] mTempMatrix = new float[16];
-    public int mTextureDataHandle;
-    public int mTextureDataHandle2;
+
+
     public volatile float mAngle;
     private float mCubeRotation;
     private long mLastUpdateMillis;
@@ -46,160 +39,103 @@ public class mGLRenderer implements GLSurfaceView.Renderer {
     /** The duration, in milliseconds, of one frame. */
     private static final float FRAME_TIME_MILLIS = TimeUnit.SECONDS.toMillis(1) / REFRESH_RATE_FPS;
 
-    private static final int cols = 3;//9201920;
-    private static final int rows = 3;//;
-    private static final int NUMBER_OF_TEXTURES = 2;
+    private static final int cols = 10;;
+    private static final int rows = 10;
+    public int NUMBER_OF_TEXTURES = 2;
+    public int NUMBER_OF_TEXTURES_COUNT =0;
+    public int BITMAP =0;
+    public int RAW_IMAGE = 1;
 
-
-    public   byte[] textureBytes1 = new byte[cols *rows*3] ;
+    public   byte[][] textureBytes = new byte[NUMBER_OF_TEXTURES][cols *rows*3] ;
     public   byte[] textureBytes2 = new byte[cols *rows*3] ;
-    final int[] textureHandle = new int[2];
+
+    final int[] textureHandle = new int[NUMBER_OF_TEXTURES];
+    public int []  mTextureDataHandle = new int[NUMBER_OF_TEXTURES];
 
 
-    public ByteBuffer  texturebuffer1;
-    public ByteBuffer  texturebuffer2;
+    public ByteBuffer[]  texturebuffer = new ByteBuffer[NUMBER_OF_TEXTURES];
+
 
     private Context context;
-    public  mGLRenderer(Context context){
+    public  mGLRenderer(Context context)
+    {
         this.context = context;
     }
 
 
-    public  void   initialize_texture_array()
-    {
-
-    };
 
     public  int loadGLTexture1(final Context context, final int resourceId)
-    // public  int loadGLTexture1(final Context context)
     {
 
-
         Random random = new Random();
-        int r,g,b,k;
-        int i;
-        // buffer = ByteBuffer.allocate(cols *rows*3);
-        texturebuffer1 = ByteBuffer.wrap(textureBytes1);
-        for ( i = 0; i < (cols *rows); i++) {
-            r = random.nextInt(255);
-            g = random.nextInt(255);
-            b = random.nextInt(255);
-            k= (r+g+b)/3;
-            r =k;
-            g=k;
-            b=k;
-            texturebuffer1.put(((i*3)+0),(byte)r);
-            texturebuffer1.put(((i*3)+1),(byte)g);
-            texturebuffer1.put(((i*3)+2),(byte)b);
+        int red,green,blue;
+        int gray_value;
+
+        texturebuffer[NUMBER_OF_TEXTURES_COUNT] = ByteBuffer.wrap(textureBytes[NUMBER_OF_TEXTURES_COUNT]);
+
+        for ( int i = 0; i < (cols *rows); i++)
+        {
+            red = random.nextInt(255);
+            green = random.nextInt(255);
+            blue = random.nextInt(255);
+            if(NUMBER_OF_TEXTURES_COUNT == 0)
+            {
+                gray_value= (red+green+blue)/3;
+            //gray_value = 1;
+                red =gray_value;
+                green=gray_value;
+                blue=gray_value;
+            }
+
+
+            texturebuffer[NUMBER_OF_TEXTURES_COUNT].put(((i*3)+0),(byte)red);
+            texturebuffer[NUMBER_OF_TEXTURES_COUNT].put(((i*3)+1),(byte)green);
+            texturebuffer[NUMBER_OF_TEXTURES_COUNT].put(((i*3)+2),(byte)blue);
 
         }
 
 
-
-
-        if(textureHandle[0] != 0)
+        if(textureHandle[NUMBER_OF_TEXTURES_COUNT] != 0)
         {
 
-            /*final BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inScaled = false;
-            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),resourceId, options);
-            mGLRenderer.checkGlError("BitmapFactory.decodeResource");
-            GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
-            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureHandle[0]);
-            //GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,GLES20.GL_TEXTURE_MIN_FILTER,GLES20.GL_REPEAT);
-            //GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,GLES20.GL_TEXTURE_MAG_FILTER,GLES20.GL_REPEAT);
-            GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,GLES20.GL_TEXTURE_MIN_FILTER,GLES20.GL_NEAREST);
-            GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,GLES20.GL_TEXTURE_MAG_FILTER,GLES20.GL_LINEAR);
+            if(BITMAP == 1)
+            {
+                    final BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inScaled = false;
+                    Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),resourceId, options);
+                    mGLRenderer.checkGlError("BitmapFactory.decodeResource");
 
-            //GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGB, cols, rows, 0, GLES20.GL_RGB, GLES20.GL_UNSIGNED_BYTE,buffer);
-            //GLES20.glGenerateMipmap(GLES20.GL_TEXTURE_2D);
-            GLUtils.texImage2D(GLES20.GL_TEXTURE_2D,0,bitmap,0);
-            bitmap.recycle();*/
-            GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
-            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureHandle[0]);
-            GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,GLES20.GL_TEXTURE_MIN_FILTER,GLES20.GL_NEAREST);
-            GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,GLES20.GL_TEXTURE_MAG_FILTER,GLES20.GL_LINEAR);
+                    GLES20.glActiveTexture(GLES20.GL_TEXTURE0+NUMBER_OF_TEXTURES_COUNT);
+                    GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureHandle[NUMBER_OF_TEXTURES_COUNT]);
+                    GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,GLES20.GL_TEXTURE_MIN_FILTER,GLES20.GL_NEAREST);
+                    GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,GLES20.GL_TEXTURE_MAG_FILTER,GLES20.GL_LINEAR);
+                    GLUtils.texImage2D(GLES20.GL_TEXTURE_2D,0,bitmap,0);
+                    bitmap.recycle();
+            }
 
-            GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGB, cols, rows, 0, GLES20.GL_RGB, GLES20.GL_UNSIGNED_BYTE, texturebuffer1);
-            GLES20.glGenerateMipmap(GLES20.GL_TEXTURE_2D);
-         /*   GLUtils.texImage2D(GLES20.GL_TEXTURE_2D,0,bitmap,0);
-            bitmap.recycle();*/
+            if(RAW_IMAGE == 1) {
+
+                GLES20.glActiveTexture(GLES20.GL_TEXTURE0 + NUMBER_OF_TEXTURES_COUNT);
+                GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureHandle[NUMBER_OF_TEXTURES_COUNT]);
+                GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_NEAREST);
+                GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
+
+                GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGB, cols, rows, 0, GLES20.GL_RGB, GLES20.GL_UNSIGNED_BYTE, texturebuffer[NUMBER_OF_TEXTURES_COUNT]);
+                GLES20.glGenerateMipmap(GLES20.GL_TEXTURE_2D);
+            }
+
 
         }
 
-        if(textureHandle[0] == 0)
+        if(textureHandle[NUMBER_OF_TEXTURES_COUNT] == 0)
         {
             mGLRenderer.checkGlError("BitmapFactory.decodeResource");
             throw new RuntimeException("Error loading Texture.");
         }
-        return textureHandle[0];
+        return textureHandle[NUMBER_OF_TEXTURES_COUNT];
 
     }
 
-    public  int loadGLTexture2(final Context context, final int resourceId)
-    // public  int loadGLTexture1(final Context context)
-    {
-
-        Random random = new Random();
-        int r,g,b,k;
-        int i;
-        // buffer = ByteBuffer.allocate(cols *rows*3);
-        texturebuffer2 = ByteBuffer.wrap(textureBytes2);
-        for ( i = 0; i < (cols *rows); i++) {
-            r = random.nextInt(255);
-            g = random.nextInt(255);
-            b = random.nextInt(255);
-           /* k= (r+g+b)/3;
-            r =k;
-            g=k;
-            b=k;*/
-            texturebuffer2.put(((i*3)+0),(byte)r);
-            texturebuffer2.put(((i*3)+1),(byte)g);
-            texturebuffer2.put(((i*3)+2),(byte)b);
-
-        }
-
-
-        if(textureHandle[1] != 0)
-        {
-
-           /*final BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inScaled = false;
-            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),resourceId, options);
-            mGLRenderer.checkGlError("BitmapFactory.decodeResource");
-            GLES20.glActiveTexture(GLES20.GL_TEXTURE1);
-            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureHandle[1]);
-            //GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,GLES20.GL_TEXTURE_MIN_FILTER,GLES20.GL_REPEAT);
-            //GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,GLES20.GL_TEXTURE_MAG_FILTER,GLES20.GL_REPEAT);
-            GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,GLES20.GL_TEXTURE_MIN_FILTER,GLES20.GL_NEAREST);
-            GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,GLES20.GL_TEXTURE_MAG_FILTER,GLES20.GL_LINEAR);
-
-            //GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGB, cols, rows, 0, GLES20.GL_RGB, GLES20.GL_UNSIGNED_BYTE,buffer);
-            //GLES20.glGenerateMipmap(GLES20.GL_TEXTURE_2D);
-            GLUtils.texImage2D(GLES20.GL_TEXTURE_2D,0,bitmap,0);
-            bitmap.recycle();*/
-
-
-           GLES20.glActiveTexture(GLES20.GL_TEXTURE1);
-            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureHandle[1]);
-            GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,GLES20.GL_TEXTURE_MIN_FILTER,GLES20.GL_NEAREST);
-            GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,GLES20.GL_TEXTURE_MAG_FILTER,GLES20.GL_LINEAR);
-
-            GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGB, cols, rows, 0, GLES20.GL_RGB, GLES20.GL_UNSIGNED_BYTE,texturebuffer2);
-            GLES20.glGenerateMipmap(GLES20.GL_TEXTURE_2D);
-         /*   GLUtils.texImage2D(GLES20.GL_TEXTURE_2D,0,bitmap,0);
-            bitmap.recycle();*/
-
-        }
-
-        if(textureHandle[1] == 0)
-        {
-            mGLRenderer.checkGlError("BitmapFactory.decodeResource");
-            throw new RuntimeException("Error loading Texture.");
-        }
-        return textureHandle[1];
-
-    }
 
     @Override
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
@@ -208,9 +144,8 @@ public class mGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
-        //mTriangle = new Triangle();
         mSquare   = new Square();
-        initialize_texture_array();
+
     }
     @Override
     public void onDrawFrame(GL10 unused) {
@@ -223,28 +158,22 @@ public class mGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1);
         GLES20.glGenTextures(2,textureHandle,0);
 
-        //mTextureDataHandle = loadGLTexture1(context);
-        mTextureDataHandle = loadGLTexture1(context, R.drawable.heart);
-        mTextureDataHandle2 = loadGLTexture2(context, R.drawable.brick);
-        mGLRenderer.checkGlError("loadGLTexture");
+         mTextureDataHandle[NUMBER_OF_TEXTURES_COUNT] = loadGLTexture1(context, R.drawable.brick);
+         NUMBER_OF_TEXTURES_COUNT++;
+         mTextureDataHandle[NUMBER_OF_TEXTURES_COUNT] = loadGLTexture1(context, R.drawable.heart);
+         mGLRenderer.checkGlError("loadGLTexture");
 
+       /* for(int i=0; i< NUMBER_OF_TEXTURES_COUNT ;i++ )
+        {
+            mTextureDataHandle[NUMBER_OF_TEXTURES_COUNT] = loadGLTexture1(context, R.drawable.heart);
+            NUMBER_OF_TEXTURES_COUNT++;
+            mGLRenderer.checkGlError("loadGLTexture");
+        }*/
         Matrix.setLookAtM(mViewMatrix, 0, 0, 0, 5, 0f, 0f, 0.0f, 0f, 1.0f, 0.0f);
 
-
-       /* Matrix.setIdentityM(mModelMatrix, 0); // initialize to identity matrix
-        Matrix.translateM(mModelMatrix, 0, -0.5f, 0.0f, 0.0f); // translation to the left
-        // Matrix.translateM(mModel1Matrix, 0, 0.5f, 0.0f, 0);
-        Matrix.setRotateM(mRotationMatrix, 0, angle, 0.0f, 1.0f, 0.0f);
-        mTempMatrix = mModelMatrix.clone();
-        Matrix.multiplyMM(mModelMatrix, 0, mTempMatrix, 0, mRotationMatrix, 0);*/
-        //  Matrix.multiplyMM(mModelMatrix, 0,mRotationMatrix, 0, mTempMatrix,0);
-        // Matrix.multiplyMM(mModelViewMatrix, 0, mTempMatrix, 0, mRotationMatrix, 0);
-
-        //  mTempMatrix = mModelMatrix.clone();
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
-        // mTempMatrix = mMVPMatrix.clone();
-        // Matrix.multiplyMM(mMVPMatrix, 0, mTempMatrix, 0, mModelMatrix, 0);
-        mSquare.draw(mMVPMatrix,mTextureDataHandle,mTextureDataHandle2);
+        mSquare.draw(mMVPMatrix,mTextureDataHandle[0],mTextureDataHandle[1]);
+        NUMBER_OF_TEXTURES_COUNT =0;
         sleep(6000 );
 
 

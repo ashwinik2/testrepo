@@ -33,25 +33,21 @@ public class Square {
             "precision mediump float;" +
                     "varying vec3 v_Color; " +
                     "varying vec2 v_texCoordinate;"+
-                    "uniform sampler2D u_Texture;" +
-                    "uniform sampler2D u_Texture1;" +
+                    "uniform sampler2D u_Texture_1;" +
+                    "uniform sampler2D u_Texture_2;" +
+                    "vec3 average = vec3(2,2,2);"  +
 
                     "void main() {" +
 
+                         "vec3 rgb_pixel_color_texture1 = texture2D(u_Texture_1, v_texCoordinate).rgb;"+
+                         "vec3 rgb_pixel_color_texture2 = texture2D(u_Texture_2, v_texCoordinate).rgb;"+
 
-                    // "vec3 result= texture2D(u_Texture, v_texCoordinate).rgb;"+
-                  //  "vec3 result= texture2D(u_Texture, v_texCoordinate).rgb;"+
-                  "vec3 rgb_pixel_color = texture2D(u_Texture, v_texCoordinate).rgb;"+
-                  //  "rgb_pixel_color.rgb = vec3(1.0,0.0,0.0);"+
-                 "vec3 rgb_pixel_color1 = texture2D(u_Texture1, v_texCoordinate).rgb;"+
-                 //   "rgb_pixel_color.rgb = vec3(0.0,1.0,0.0);"+
+                         "vec3 rgb_value_tex1_tex2 = (rgb_pixel_color_texture1+rgb_pixel_color_texture2);"+
 
-                    "vec3 result = ((rgb_pixel_color+rgb_pixel_color1));"+
-                   "vec3 result2 = vec3(2,2,2);"  +
-                    "result = result/result2;"+
-        //  "vec3 result = mix(texture2D(u_Texture, v_texCoordinate).rgb, texture2D(u_Texture1, v_texCoordinate).rgb, 0.5);"+
-                  //  "gl_FragColor = vec4((rgb_pixel_color*rgb_pixel_color),1.0);" +
-                    "gl_FragColor = vec4(result,1.0);" +
+                         "vec3 result = rgb_value_tex1_tex2/average;"+
+                        //  "vec3 result = mix(texture2D(u_Texture_1, v_texCoordinate).rgb, texture2D(u_Texture_2, v_texCoordinate).rgb, 0.5);"+
+
+                         "gl_FragColor = vec4(result,1.0);" +
 
                     "}";
 
@@ -67,18 +63,21 @@ public class Square {
     private int mMVPMatrixHandle;
 
     private int ambientLightUniformLocation;
+    public int NUMBER_OF_TEXTURES = 2;
+    public int NUMBER_OF_VERTICES = 6;
 
-    private int mTextureUniformHandle,mTextureUniformHandle2;
+    public int[] mTextureUniformHandle = new int[NUMBER_OF_TEXTURES];
+    public int NUMBER_OF_TEXTURES_COUNT =0;
     private int mTextureHandle;
     private final FloatBuffer textureBuffer;
 
 
     static final int COORDS_PER_VERTEX = 3;
     static final int COLOR_COORDS_PER_VERTEX = 3;
+    static final int TextCOORDS_PER_VERTEX = 2;
 
     private final int vertexStride = COORDS_PER_VERTEX * 4;
     private final int colorvertexStride = COLOR_COORDS_PER_VERTEX * 4;
-    static final int TextCOORDS_PER_VERTEX = 2;
     private final int textureStride = TextCOORDS_PER_VERTEX * 4;
 
 
@@ -161,7 +160,7 @@ public class Square {
         GLES20.glLinkProgram(mProgram);
     }
 
-    public void draw(float[] mvpMatrix,int mTextureDataHandle,int mTextureDataHandle2)
+    public void draw(float[] mvpMatrix,int mTextureDataHandle_1,int mTextureDataHandle_2)
     {
         GLES20.glUseProgram(mProgram);
         mPositionHandle = GLES20.glGetAttribLocation(mProgram, "vPosition");
@@ -187,17 +186,21 @@ public class Square {
                 textureStride,textureBuffer);
 
 
-        mTextureUniformHandle = GLES20.glGetUniformLocation(mProgram,"u_Texture");
+        mTextureUniformHandle[NUMBER_OF_TEXTURES_COUNT] = GLES20.glGetUniformLocation(mProgram,"u_Texture_1");
         mGLRenderer.checkGlError("glGetUniformLocation");
-        GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D,mTextureDataHandle);
-        GLES20.glUniform1i( mTextureUniformHandle, 0);
+        GLES20.glActiveTexture(GLES20.GL_TEXTURE0+NUMBER_OF_TEXTURES_COUNT);
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D,mTextureDataHandle_1);
+        GLES20.glUniform1i( mTextureUniformHandle[NUMBER_OF_TEXTURES_COUNT], NUMBER_OF_TEXTURES_COUNT);
 
-        mTextureUniformHandle2 = GLES20.glGetUniformLocation(mProgram,"u_Texture1");
+        NUMBER_OF_TEXTURES_COUNT++;
+
+        mTextureUniformHandle[NUMBER_OF_TEXTURES_COUNT] = GLES20.glGetUniformLocation(mProgram,"u_Texture_2");
         mGLRenderer.checkGlError("glGetUniformLocation");
-        GLES20.glActiveTexture(GLES20.GL_TEXTURE1);
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D,mTextureDataHandle2);
-        GLES20.glUniform1i( mTextureUniformHandle2, 1);
+        GLES20.glActiveTexture(GLES20.GL_TEXTURE0+NUMBER_OF_TEXTURES_COUNT);
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D,mTextureDataHandle_2);
+        GLES20.glUniform1i( mTextureUniformHandle[NUMBER_OF_TEXTURES_COUNT], NUMBER_OF_TEXTURES_COUNT);
+
+        NUMBER_OF_TEXTURES_COUNT = 0;
 
 
         mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uMVPMatrix");
@@ -206,7 +209,7 @@ public class Square {
         //   MyGLRenderer.checkGlError("glUniformMatrix4fv");
 
         GLES20.glDrawArrays(
-                GLES20.GL_TRIANGLES, 0,6);
+                GLES20.GL_TRIANGLES, 0,NUMBER_OF_VERTICES);
 
         GLES20.glDisableVertexAttribArray(mPositionHandle);
     }
