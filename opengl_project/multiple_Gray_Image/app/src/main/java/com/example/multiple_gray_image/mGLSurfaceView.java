@@ -1,23 +1,36 @@
 package com.example.multiple_gray_image;
 
 
+import android.content.Intent;
 import android.opengl.GLSurfaceView;
 import android.content.Context;
 import android.view.MotionEvent;
+import android.view.View;
 
 public class mGLSurfaceView extends GLSurfaceView {
+
     private final mGLRenderer mRenderer;
+    private final float TOUCH_SCALE_FACTOR = 180.0f / 520;
+    private float mPreviousX;
+    private float mPreviousY;
+
     public mGLSurfaceView(Context context) {
         super(context);
 
         setEGLContextClientVersion(2);
         mRenderer = new mGLRenderer(context);
+        //setRenderer(mRenderer);
+        //setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+    }
+
+
+
+    public void mGLSurfaceView1(Context context) {
+
         setRenderer(mRenderer);
         //setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
     }
-    private final float TOUCH_SCALE_FACTOR = 180.0f / 520;
-    private float mPreviousX;
-    private float mPreviousY;
+
     @Override
     public boolean onTouchEvent(MotionEvent e) {
         float x = e.getX();
