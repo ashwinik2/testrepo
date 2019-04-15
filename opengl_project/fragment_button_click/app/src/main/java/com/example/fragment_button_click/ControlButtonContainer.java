@@ -6,7 +6,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewOverlay;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 
@@ -57,6 +59,7 @@ public class ControlButtonContainer extends Fragment implements View.OnClickList
                 Log.e("R.id.button_show","onclick button");
                 Toast.makeText(getActivity(),"inside button click START",Toast.LENGTH_SHORT).show();
                 mCallback.messageFromControlButton("Start");
+
                 break;
             case R.id.button_stop:
                 Log.e("R.id.button_show","onclick button");

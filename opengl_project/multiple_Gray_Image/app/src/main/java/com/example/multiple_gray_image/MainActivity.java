@@ -11,16 +11,18 @@ import android.widget.Button;
 import android.view.ViewGroup.LayoutParams;
 import 	android.widget.LinearLayout;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements android.view.View.OnClickListener{
 
-    private GLSurfaceView mGLView;
-    private Button mButton;
+  public GLSurfaceView mGLView;
+    public Button mButton;
 
     public void start_app(View v)
     {
-       Intent intent = new Intent(MainActivity.this, MainActivity.class);
+       /*Intent intent = new Intent(MainActivity.this, MainActivity.class);
         startActivity(intent);
-        finish();
+        finish();*/
+        setContentView(mGLView);
+       mGLView.requestRender();
 
 
     }
@@ -34,17 +36,24 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setContentView(mGLView);
         LinearLayout ll = new LinearLayout(this);
-        mButton = new Button(this);
+        mButton = (Button)findViewById(R.id.button);
+       // mButton = new Button(this);
         mButton.setText("START");
         ll.addView(mButton);
         ll.setGravity( Gravity.CENTER_VERTICAL | Gravity.BOTTOM);
         this.addContentView(ll,
                 new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
-        mButton.setOnClickListener(new View.OnClickListener() {
+      // mButton.setOnClickListener(this);
+        /*mButton.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                mGLView.requestRender();
+            }
+        });
+       /* mButton.setOnClickListener(new View.OnClickListener() {
                                        @Override
                                        public void onClick(View view)
                                        {
-                                           mGLView.mGLSurfaceView1(this);
+                                           mGLView.requestRender();
                                        }
                                    });
        // Button button = (Button) findViewById(R.id.button);
@@ -58,8 +67,22 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });*/
-       //start_app(mGLView);
+       start_app(mGLView);
+
     }
+    public void onClick(View v)
+    {
+        if(v == mButton)
+        {
+            //finish();
+
+            mGLView.requestRender();
+        }
+    }
+    /*@Override
+    public void onClick(View mGLView){
+        mGLView.requestRender();*/
+
 
 
     @Override

@@ -9,26 +9,28 @@ import android.view.View;
 
 public class mGLSurfaceView extends GLSurfaceView {
 
-    private final mGLRenderer mRenderer;
+    private mGLRenderer mRenderer;
+    private Context context;
+
     private final float TOUCH_SCALE_FACTOR = 180.0f / 520;
     private float mPreviousX;
     private float mPreviousY;
 
     public mGLSurfaceView(Context context) {
         super(context);
-
+        //this.context = context;
         setEGLContextClientVersion(2);
         mRenderer = new mGLRenderer(context);
-        //setRenderer(mRenderer);
+        setRenderer(mRenderer);
+
         //setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
     }
 
 
 
-    public void mGLSurfaceView1(Context context) {
+    public void requestRender() {
 
         setRenderer(mRenderer);
-        //setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
     }
 
     @Override

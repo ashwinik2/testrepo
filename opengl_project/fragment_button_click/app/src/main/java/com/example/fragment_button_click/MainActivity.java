@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.ViewOverlay;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
@@ -17,6 +19,9 @@ public class MainActivity extends AppCompatActivity
 {
     ControlButtonContainer mFragmentControlButton;
     GLSurfaceViewContainer mFragmentGLSurfaceView;
+    FrameLayout frameLayout;
+    CustomDrawable obj;
+    ViewOverlay viewOverlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +39,12 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.commit();
 
         Log.i("MainActivity","After ControlButton and GLSurfaceView Container created");
+        frameLayout = findViewById(R.id.glsurfaceview_container);
+        viewOverlay = frameLayout.getOverlay();
+        obj = new CustomDrawable(this);
+        viewOverlay.add(obj);
+
+
     }
         @Override
         public void messageFromControlButton(String message)

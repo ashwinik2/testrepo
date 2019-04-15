@@ -181,6 +181,9 @@ public class mGLRenderer implements GLSurfaceView.Renderer {
     @Override
     public void onSurfaceChanged(GL10 unused, int width, int height) {
         Log.i("onSurfaceChanged()","In mGLRenderer Class");
+
+        System.out.println("GL Renderer Surface Width  = " + width);
+        System.out.println("GL Renderer Surface Height  = " + height);
         GLES20.glViewport(0, 0, width, height);
         float ratio = (float) width / height;
         Matrix.frustumM(mProjectionMatrix, 0, -ratio, ratio, -1, 1, 3, 7);
