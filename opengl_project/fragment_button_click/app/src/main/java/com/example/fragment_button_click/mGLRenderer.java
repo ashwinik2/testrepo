@@ -158,7 +158,7 @@ public class mGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1);
         GLES20.glGenTextures(2,mtextureHandle,0);
 
-        mTextureDataHandle[NUMBER_OF_TEXTURES_COUNT] = loadGLTexture1(context, R.drawable.brick);
+        mTextureDataHandle[NUMBER_OF_TEXTURES_COUNT] = loadGLTexture1(context,R.drawable.brick);
         NUMBER_OF_TEXTURES_COUNT++;
         mTextureDataHandle[NUMBER_OF_TEXTURES_COUNT] = loadGLTexture1(context, R.drawable.heart);
         mGLRenderer.checkGlError("loadGLTexture");

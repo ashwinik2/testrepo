@@ -1,5 +1,7 @@
 package com.example.fragment_button_click;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
@@ -18,38 +20,43 @@ import static android.graphics.Paint.ANTI_ALIAS_FLAG;
 public class CustomDrawable extends Drawable {
 
 
-    private Paint mpaint;
-    private Context mcontext;
+    private Paint mPaint;
+    private Context mContext;
+    Bitmap mBitmap;
 
     public CustomDrawable(Context context) {
         Log.i("CustomDrawable()"," In customDrawable");
-        this.mcontext = context;
+        this.mContext = context;
         initPaint();
     }
 
     private void initPaint()
     {
         Log.i("initPaint()"," In customDrawable");
-        mpaint = new Paint();
-        mpaint.setColor(Color.parseColor("#4D000000"));
+        mPaint = new Paint();
+        mPaint.setColor(Color.parseColor("#4D000000"));
         //paint.setColor(Color.CYAN);
-        mpaint.setAntiAlias(true);
+        mPaint.setAntiAlias(true);
     }
 
     @Override
     public void draw(@NonNull Canvas canvas) {
 
         Log.i("draw()"," In customDrawable");
-        //transparent screen
-        canvas.drawColor(mpaint.getColor());
 
-        mpaint.setTextSize(30);
-        mpaint.setColor(Color.WHITE);
-        mpaint.setFakeBoldText(true);
-        canvas.drawText("Left Top",16,50,mpaint);
-        canvas.drawText("Left Bottom",16,canvas.getHeight() - 30,mpaint);
-        canvas.drawText("Right Top",canvas.getWidth()  - 200,50,mpaint);
-        canvas.drawText("Right Botton",canvas.getWidth()  - 200,canvas.getHeight() - 30,mpaint);
+        canvas.drawColor(mPaint.getColor());
+        mBitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.heart);
+       // mPaint.setColor(Color.);
+        mPaint.setColor(Color.parseColor("#4D000000"));
+        canvas.drawBitmap(mBitmap,canvas.getWidth()/2-200,canvas.getHeight()/2 - 200, mPaint);
+        mPaint.setTextSize(30);
+        mPaint.setColor(Color.WHITE);
+        mPaint.setFakeBoldText(true);
+        canvas.drawText("Left Top",16,50,mPaint);
+        canvas.drawText("Left Bottom",16,canvas.getHeight() - 30,mPaint);
+        canvas.drawText("Right Top",canvas.getWidth()  - 200,50,mPaint);
+        canvas.drawText("Right Botton",canvas.getWidth()  - 200,canvas.getHeight() - 30,mPaint);
+        mBitmap.recycle();
 
     }
 
