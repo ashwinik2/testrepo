@@ -14,18 +14,31 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/glsurfaceview_container">
 
-        <Button
-            android:id="@+id/button_start"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="START" />
+        <!--     <Button
+               android:id="@+id/button_start"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="START" />
 
-        <Button
-            android:id="@+id/button_stop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="300dp"
-            android:text="STOP" />
-    </FrameLayout>
+           <Button
+               android:id="@+id/button_stop"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="300dp"
+               android:text="STOP" /> -->
 
-</android.support.constraint.ConstraintLayout>
+           <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+               xmlns:app="http://schemas.android.com/apk/res-auto"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent">
+
+               <android.support.v7.widget.RecyclerView
+                   android:id="@+id/recycle_view"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   app:layout_constraintHorizontal_bias="0.0" />
+           </android.support.constraint.ConstraintLayout>
+
+       </FrameLayout>
+
+   </android.support.constraint.ConstraintLayout>
