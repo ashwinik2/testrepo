@@ -1,24 +1,20 @@
 package com.example.fragment_button_click;
 
-import android.support.annotation.NonNull;
+import android.content.Context;
 import android.util.Log;
+import android.view.View;
 
-public class ControlViewModel {
-    private String simpleText;
+public abstract class ControlViewModel {
 
-    public ControlViewModel(@NonNull final String simpleText) {
-        Log.i("ControlViewModel()","ControlViewModel");
-        setSimpleText(simpleText);
-    }
+        public ControlViewModel() {
+            Log.i("ControlViewModel()","ControlViewModel");
+        }
 
-    @NonNull
-    public String getSimpleText() {
-        Log.i("getSimpleText()","ControlViewModel");
-        return simpleText;
-    }
+        protected abstract View createView(Context context);
 
-    public void setSimpleText( @NonNull final String simpleText) {
-        Log.i("setSimpleText()","ControlViewModel");
-        this.simpleText = simpleText;
+    public void bindData(View itemView) {
+
     }
 }
+
+
