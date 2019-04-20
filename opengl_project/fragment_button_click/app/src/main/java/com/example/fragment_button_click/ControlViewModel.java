@@ -6,15 +6,17 @@ import android.view.View;
 
 public abstract class ControlViewModel {
 
-        public ControlViewModel() {
+        public ControlViewModel()
+        {
             Log.i("ControlViewModel()","ControlViewModel");
         }
 
         protected abstract View createView(Context context);
 
-    public void bindData(View itemView) {
+        public void bindData(View itemView)
+        {
 
-    }
+        }
 }
 
 

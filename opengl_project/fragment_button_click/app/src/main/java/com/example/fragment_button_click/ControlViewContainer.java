@@ -51,9 +51,13 @@ public class ControlViewContainer extends Fragment
     {
         List<ControlViewModel> ControlViewModelList = new ArrayList<>();
 
-        ControlViewModelList.add(new ControlViewButton(0,mContext));
+      /*  ControlViewModelList.add(new ControlViewButton(0,mContext));
         ControlViewModelList.add(new ControlViewText(String.format(Locale.US, "Text Item View", 1),1));
-        ControlViewModelList.add(new ControlViewRadioButton(2));
+        ControlViewModelList.add(new ControlViewRadioButton(2));*/
+
+        ControlViewModelList.add(new ControlViewImageButton(0,mContext));
+        ControlViewModelList.add(new ControlViewCheckBox(1,mContext));
+
             
         return ControlViewModelList;
     }
