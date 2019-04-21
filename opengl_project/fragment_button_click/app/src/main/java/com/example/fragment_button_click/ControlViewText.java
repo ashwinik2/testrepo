@@ -2,15 +2,10 @@ package com.example.fragment_button_click;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 public class ControlViewText extends ControlViewModel {
     private String mSimpleText;
@@ -46,12 +41,12 @@ public class ControlViewText extends ControlViewModel {
 
     public View  createView(Context context) {
         mTextView = (View) LayoutInflater.from(context)
-                .inflate(R.layout.item_simple_itemview, null);
+                .inflate(R.layout.text_itemview, null);
         setView(mTextView,context);
         return mTextView;
     }
     public void bindData(View itemView) {
-        mSimpleTextView = (TextView) itemView.findViewById(R.id.simple_text);
+        mSimpleTextView = (TextView) itemView.findViewById(R.id.text1);
         mSimpleTextView.setText(getSimpleText());
     }
 }

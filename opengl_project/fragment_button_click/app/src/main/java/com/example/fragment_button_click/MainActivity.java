@@ -8,7 +8,8 @@ import android.widget.FrameLayout;
 
 public class MainActivity extends AppCompatActivity
         implements
-        ControlViewButton.controlButtonListener/*,
+        ControlViewButton.controlButtonListener,
+        ControlViewMode.controlModeListener/*,
         View.OnClickListener*/
 {
     ControlViewContainer mFragmentControlButton;
@@ -16,6 +17,7 @@ public class MainActivity extends AppCompatActivity
     FrameLayout frameLayout;
     CustomDrawable obj;
     ViewOverlay viewOverlay;
+    ControlViewMode mControlModeFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +30,13 @@ public class MainActivity extends AppCompatActivity
         mFragmentGLSurfaceView = new GLSurfaceViewContainer();
         fragmentTransaction.add(R.id.glsurfaceview_container,mFragmentGLSurfaceView);
 
+        mControlModeFragment = new ControlViewMode();
+        fragmentTransaction.add(R.id.control_mode_fragment, mControlModeFragment);
+        //fragmentTransaction.commit();
+
+
         mFragmentControlButton = new ControlViewContainer();
-        fragmentTransaction.add(R.id.control_button_container,mFragmentControlButton);
+        fragmentTransaction.add(R.id.control_view_container,mFragmentControlButton);
         fragmentTransaction.commit();
 
         Log.i("MainActivity","After ControlButton and GLSurfaceView Container created");
@@ -44,5 +51,19 @@ public class MainActivity extends AppCompatActivity
     {
         Log.e("main","messageFromControlButton!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         mFragmentGLSurfaceView.gotMessage(message);
+
     }
+    @Override
+    public void messageFromControlMode(CONTROL_MODE controlmode)
+    {
+        Log.e("main","messageFromControlmode!!!");
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        mFragmentControlButton = new ControlViewContainer();
+        mFragmentControlButton.setPosition(controlmode);
+        fragmentTransaction.add(R.id.control_view_container,mFragmentControlButton);
+        fragmentTransaction.commit();
+
+    }
+
 }

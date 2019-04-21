@@ -21,13 +21,29 @@
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/control_button_container"
-        android:layout_width="250dp"
-        android:layout_height="match_parent"
-        android:background="#000000"
+        android:id="@+id/control_mode_fragment"
+        android:layout_width="230dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginRight="0dp"
+        android:background="#777777"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/glsurfaceview_container">
+        app:layout_constraintTop_toTopOf="parent">
+
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/control_view_container"
+        android:layout_width="230dp"
+        android:layout_height="572dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginRight="0dp"
+        android:background="#00ffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
 
     </FrameLayout>
 </android.support.constraint.ConstraintLayout>
