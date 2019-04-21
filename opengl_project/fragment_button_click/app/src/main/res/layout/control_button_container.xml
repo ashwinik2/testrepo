@@ -14,22 +14,28 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/glsurfaceview_container">
 
+        <FrameLayout
+            android:id="@+id/control_mode_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+
+
+        </FrameLayout>
 
         <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
+            android:layout_height="match_parent"
+            android:layout_marginTop="100dp">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycle_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_constraintHorizontal_bias="0.0" />
-
-
+                tools:layout_marginTop="65dp" />
         </android.support.constraint.ConstraintLayout>
+
 
     </FrameLayout>
 
-   </android.support.constraint.ConstraintLayout>
+</android.support.constraint.ConstraintLayout>

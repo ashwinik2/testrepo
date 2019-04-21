@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void messageFromControlButton(String message)
-    {//fragment1.gotmessage(message);
+    {
         Log.e("main","messageFromControlButton!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         mFragmentGLSurfaceView.gotMessage(message);
     }

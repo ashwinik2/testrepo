@@ -3,6 +3,7 @@ package com.example.fragment_button_click;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,11 +21,10 @@ import java.util.Locale;
 public class ControlViewContainer extends Fragment
 {
 
-    String message = "From button Fragment";
-    View mControlButtonView;
     View mControlView;
     ControlViewAdapter mAdapter;
     private Context mContext;
+    ControlViewMode mControlModeFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -36,7 +36,13 @@ public class ControlViewContainer extends Fragment
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState)
     {
-        Log.i("onCreateView","Control_Button_Container");
+        Log.i("onCreateView","Control_view_Container");
+
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        mControlModeFragment = new ControlViewMode();
+        fragmentTransaction.add(R.id.control_mode_fragment, mControlModeFragment);
+        fragmentTransaction.commit();
+
         mAdapter = new ControlViewAdapter(generateSimpleList());
         mControlView = inflater.inflate(R.layout.control_button_container, container,false);
         RecyclerView recyclerView =  mControlView.findViewById(R.id.recycle_view);
