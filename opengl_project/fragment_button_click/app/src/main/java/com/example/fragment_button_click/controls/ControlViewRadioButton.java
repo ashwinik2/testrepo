@@ -1,16 +1,15 @@
-package com.example.fragment_button_click;
+package com.example.fragment_button_click.controls;
 
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
+
+import com.example.fragment_button_click.R;
+import com.example.fragment_button_click.controls.ControlViewModel;
 
 public class ControlViewRadioButton extends ControlViewModel {
 

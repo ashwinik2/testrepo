@@ -1,4 +1,4 @@
-package com.example.fragment_button_click;
+package com.example.fragment_button_click.controls;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,9 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import static com.example.fragment_button_click.CONTROL_MODE.CONTROL_MODE0;
-import static com.example.fragment_button_click.CONTROL_MODE.CONTROL_MODE1;
-import static com.example.fragment_button_click.CONTROL_MODE.CONTROL_MODE2;
+import com.example.fragment_button_click.R;
+import com.example.fragment_button_click.common.CONTROL_MODE;
 
 public class ControlViewMode extends Fragment  implements AdapterView.OnItemSelectedListener
 {

@@ -1,4 +1,4 @@
-package com.example.fragment_button_click;
+package com.example.fragment_button_click.opengl;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -14,6 +14,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLUtils;
+
+import com.example.fragment_button_click.R;
 
 import java.util.concurrent.TimeUnit;
 
@@ -158,7 +160,7 @@ public class mGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1);
         GLES20.glGenTextures(2,mtextureHandle,0);
 
-        mTextureDataHandle[NUMBER_OF_TEXTURES_COUNT] = loadGLTexture1(context,R.drawable.brick);
+        mTextureDataHandle[NUMBER_OF_TEXTURES_COUNT] = loadGLTexture1(context, R.drawable.brick);
         NUMBER_OF_TEXTURES_COUNT++;
         mTextureDataHandle[NUMBER_OF_TEXTURES_COUNT] = loadGLTexture1(context, R.drawable.heart);
         mGLRenderer.checkGlError("loadGLTexture");

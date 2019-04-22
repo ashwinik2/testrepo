@@ -1,4 +1,4 @@
-package com.example.fragment_button_click;
+package com.example.fragment_button_click.controls;
 
 import android.content.Context;
 import android.util.Log;
@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import android.widget.ImageButton;
+
+import com.example.fragment_button_click.R;
 
 public class ControlViewImageButton extends ControlViewModel {
 

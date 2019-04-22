@@ -1,4 +1,4 @@
-package com.example.fragment_button_click;
+package com.example.fragment_button_click.controls;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -6,6 +6,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
+
+import com.example.fragment_button_click.R;
+import com.example.fragment_button_click.controls.ControlViewModel;
 
 public class ControlViewText extends ControlViewModel {
     private String mSimpleText;

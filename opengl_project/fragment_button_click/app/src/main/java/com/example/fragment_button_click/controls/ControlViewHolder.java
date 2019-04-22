@@ -1,4 +1,4 @@
-package com.example.fragment_button_click;
+package com.example.fragment_button_click.controls;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -21,7 +21,7 @@ public class ControlViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-     public void bindData(ControlViewModel viewModel,int position) {
+     public void bindData(ControlViewModel viewModel, int position) {
 
          Log.i("bindData()","ControlViewHolder");
          viewModel.bindData(itemView);

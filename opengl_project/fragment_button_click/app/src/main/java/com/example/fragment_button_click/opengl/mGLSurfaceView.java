@@ -1,12 +1,12 @@
-package com.example.fragment_button_click;
+package com.example.fragment_button_click.opengl;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.opengl.GLSurfaceView;
 import android.content.Context;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
+
+import com.example.fragment_button_click.opengl.mGLRenderer;
 
 public class mGLSurfaceView extends GLSurfaceView {
 

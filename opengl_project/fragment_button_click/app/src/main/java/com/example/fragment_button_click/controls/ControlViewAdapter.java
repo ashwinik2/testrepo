@@ -1,18 +1,17 @@
-package com.example.fragment_button_click;
+package com.example.fragment_button_click.controls;
 
 import android.content.Context;
-import android.provider.MediaStore;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class ControlViewAdapter extends RecyclerView.Adapter
 {
-    private List< ControlViewModel > models = new ArrayList<>();
+    private List<ControlViewModel> models = new ArrayList<>();
     private Context mContext;
 
     public ControlViewAdapter(final List<ControlViewModel> viewModels)

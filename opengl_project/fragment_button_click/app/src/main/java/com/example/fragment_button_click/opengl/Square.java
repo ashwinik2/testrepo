@@ -1,13 +1,13 @@
-package com.example.fragment_button_click;
+package com.example.fragment_button_click.opengl;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
 import android.opengl.GLES20;
-import android.opengl.Matrix;
 import android.util.Log;
+
+import com.example.fragment_button_click.opengl.mGLRenderer;
 
 public class Square {
     private final String vertexShaderCode =

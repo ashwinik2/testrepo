@@ -1,4 +1,4 @@
-package com.example.fragment_button_click;
+package com.example.fragment_button_click.opengl;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -7,8 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.opengl.GLSurfaceView;
-import android.widget.TextView;
 
+import com.example.fragment_button_click.opengl.mGLSurfaceView;
 
 
 public class GLSurfaceViewContainer extends Fragment {
@@ -35,7 +35,7 @@ public class GLSurfaceViewContainer extends Fragment {
         //View view = inflater.inflate(R.layout.GLSurfaceViewContainer, container,false);
         //mTextView = view.findViewById(R.id.textview);
 
-        mGLSurfaceView = new com.example.fragment_button_click.mGLSurfaceView(getActivity());
+        mGLSurfaceView = new mGLSurfaceView(getActivity());
         return mGLSurfaceView;
 
     }

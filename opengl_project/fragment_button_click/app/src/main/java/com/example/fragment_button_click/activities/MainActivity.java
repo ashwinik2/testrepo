@@ -1,10 +1,18 @@
-package com.example.fragment_button_click;
+package com.example.fragment_button_click.activities;
 import android.os.Bundle;
-import android.util.Log;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.ViewOverlay;
 import android.widget.FrameLayout;
+
+import com.example.fragment_button_click.R;
+import com.example.fragment_button_click.common.CONTROL_MODE;
+import com.example.fragment_button_click.controls.ControlViewButton;
+import com.example.fragment_button_click.controls.ControlViewContainer;
+import com.example.fragment_button_click.controls.ControlViewMode;
+import com.example.fragment_button_click.drawable.CustomDrawable;
+import com.example.fragment_button_click.opengl.GLSurfaceViewContainer;
 
 public class MainActivity extends AppCompatActivity
         implements
@@ -62,7 +70,7 @@ public class MainActivity extends AppCompatActivity
         mFragmentControlButton = new ControlViewContainer();
         mFragmentControlButton.setPosition(controlmode);
         fragmentTransaction.replace(R.id.control_view_container,mFragmentControlButton);
-        fragmentTransaction.commit();
+    fragmentTransaction.commit();
 
     }
 

@@ -1,4 +1,4 @@
-package com.example.fragment_button_click;
+package com.example.fragment_button_click.controls;
 
 
 import android.content.Context;
@@ -6,9 +6,9 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.Toast;
+
+import com.example.fragment_button_click.R;
 
 public class ControlViewCheckBox extends ControlViewModel {
 

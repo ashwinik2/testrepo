@@ -1,4 +1,4 @@
-package com.example.fragment_button_click;
+package com.example.fragment_button_click.drawable;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,6 +15,9 @@ import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
+
+import com.example.fragment_button_click.R;
+
 import static android.graphics.Paint.ANTI_ALIAS_FLAG;
 
 public class CustomDrawable extends Drawable {

@@ -1,4 +1,4 @@
-package com.example.fragment_button_click;
+package com.example.fragment_button_click.controls;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
@@ -9,16 +9,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.fragment_button_click.R;
+import com.example.fragment_button_click.common.CONTROL_MODE;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-enum CONTROL_MODE{
-    CONTROL_MODE0,
-    CONTROL_MODE1,
-    CONTROL_MODE2
-};
+;
 
 public class ControlViewContainer extends Fragment
 {
@@ -30,7 +29,7 @@ public class ControlViewContainer extends Fragment
     CONTROL_MODE mControlMode = CONTROL_MODE.CONTROL_MODE1;
 
 
-    void setPosition(CONTROL_MODE controlmode)
+    public void setPosition(CONTROL_MODE controlmode)
     {
         mControlMode = controlmode;
     }
