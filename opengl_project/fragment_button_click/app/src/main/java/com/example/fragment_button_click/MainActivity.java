@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         mFragmentControlButton = new ControlViewContainer();
         mFragmentControlButton.setPosition(controlmode);
-        fragmentTransaction.add(R.id.control_view_container,mFragmentControlButton);
+        fragmentTransaction.replace(R.id.control_view_container,mFragmentControlButton);
         fragmentTransaction.commit();
 
     }
