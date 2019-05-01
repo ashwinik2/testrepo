@@ -20,6 +20,13 @@
 
     </FrameLayout>
 
+    <com.example.fragment_button_click.drawable.CustomView
+        android:id="@+id/customview"
+        android:layout_width="800dp"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/control_view_container" />
+
     <FrameLayout
         android:id="@+id/control_mode_fragment"
         android:layout_width="230dp"
@@ -34,6 +41,7 @@
 
     </FrameLayout>
 
+
     <FrameLayout
         android:id="@+id/control_view_container"
         android:layout_width="230dp"
@@ -46,4 +54,5 @@
 
 
     </FrameLayout>
+
 </android.support.constraint.ConstraintLayout>

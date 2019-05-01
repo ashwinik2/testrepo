@@ -22,10 +22,9 @@ public class ControlViewButton extends ControlViewModel {
     controlButtonListener mCallback;
     private Button mButton;
 
-    public ControlViewButton(int itemViewListNumber,final Context context) {
+    public ControlViewButton(final Context context) {
         super();
         Log.i("ButtonControlView()","ButtonControlView");
-        BUTTON_ITEMVIEW_LIST = itemViewListNumber;
         setButtonNameStart();
         mContext = context;
 

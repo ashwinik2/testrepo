@@ -19,11 +19,10 @@ public class ControlViewCheckBox extends ControlViewModel {
     private CheckBox mCheckBox;
     private int CHECKBOX_ITEMVIEW_LIST;
 
-    public ControlViewCheckBox(int itemViewListNumber,final Context context)
+    public ControlViewCheckBox(final Context context)
     {
         super();
         Log.i("ControlViewCheckBox()","ControlViewCheckBox");
-        CHECKBOX_ITEMVIEW_LIST = itemViewListNumber;
         setCheckBoxName();
         mContext = context;
 

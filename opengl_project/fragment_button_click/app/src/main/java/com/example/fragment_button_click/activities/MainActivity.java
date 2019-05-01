@@ -1,5 +1,7 @@
 package com.example.fragment_button_click.activities;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -12,6 +14,7 @@ import com.example.fragment_button_click.controls.ControlViewButton;
 import com.example.fragment_button_click.controls.ControlViewContainer;
 import com.example.fragment_button_click.controls.ControlViewMode;
 import com.example.fragment_button_click.drawable.CustomDrawable;
+import com.example.fragment_button_click.drawable.CustomView;
 import com.example.fragment_button_click.opengl.GLSurfaceViewContainer;
 
 public class MainActivity extends AppCompatActivity
@@ -23,10 +26,10 @@ public class MainActivity extends AppCompatActivity
     ControlViewContainer mFragmentControlButton;
     GLSurfaceViewContainer mFragmentGLSurfaceView;
     FrameLayout frameLayout;
-    CustomDrawable obj;
-    ViewOverlay viewOverlay;
+    CustomDrawable mCustomDraw;
+    ViewOverlay viewOverlayText;
+    CustomView mCustomView;
     ControlViewMode mControlModeFragment;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -40,8 +43,6 @@ public class MainActivity extends AppCompatActivity
 
         mControlModeFragment = new ControlViewMode();
         fragmentTransaction.add(R.id.control_mode_fragment, mControlModeFragment);
-        //fragmentTransaction.commit();
-
 
         mFragmentControlButton = new ControlViewContainer();
         fragmentTransaction.add(R.id.control_view_container,mFragmentControlButton);
@@ -49,9 +50,18 @@ public class MainActivity extends AppCompatActivity
 
         Log.i("MainActivity","After ControlButton and GLSurfaceView Container created");
         frameLayout = findViewById(R.id.glsurfaceview_container);
-        viewOverlay = frameLayout.getOverlay();
-        obj = new CustomDrawable(this);
-        viewOverlay.add(obj);
+        viewOverlayText = frameLayout.getOverlay();
+        mCustomDraw = new CustomDrawable(this);
+        viewOverlayText.add(mCustomDraw);
+
+        /*ConstraintLayout mConstraint = findViewById(R.id.glsurfaceview_container);
+        CustomView mView = new CustomView(this);
+        mConstraint.addView(mView);*/
+
+        FrameLayout mframelayout = findViewById(R.id.glsurfaceview_container);
+        CustomView mView = new CustomView(this);
+        mframelayout.addView(mView);
+
     }
 
     @Override
@@ -70,7 +80,7 @@ public class MainActivity extends AppCompatActivity
         mFragmentControlButton = new ControlViewContainer();
         mFragmentControlButton.setPosition(controlmode);
         fragmentTransaction.replace(R.id.control_view_container,mFragmentControlButton);
-    fragmentTransaction.commit();
+        fragmentTransaction.commit();
 
     }
 

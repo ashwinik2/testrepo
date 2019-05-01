@@ -1,7 +1,5 @@
 package com.example.fragment_button_click.drawable;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
@@ -11,21 +9,13 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.Toast;
-
-import com.example.fragment_button_click.R;
-
-import static android.graphics.Paint.ANTI_ALIAS_FLAG;
 
 public class CustomDrawable extends Drawable {
 
 
     private Paint mPaint;
     private Context mContext;
-    Bitmap mBitmap;
+    Rect mRect;
 
     public CustomDrawable(Context context) {
         Log.i("CustomDrawable()"," In customDrawable");
@@ -37,21 +27,31 @@ public class CustomDrawable extends Drawable {
     {
         Log.i("initPaint()"," In customDrawable");
         mPaint = new Paint();
+        mRect = new Rect();
         mPaint.setColor(Color.parseColor("#4D000000"));
-        //paint.setColor(Color.CYAN);
         mPaint.setAntiAlias(true);
-    }
 
+    }
     @Override
     public void draw(@NonNull Canvas canvas) {
 
         Log.i("draw()"," In customDrawable");
-
         canvas.drawColor(mPaint.getColor());
-        mBitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.heart);
-       // mPaint.setColor(Color.);
         mPaint.setColor(Color.parseColor("#4D000000"));
-        canvas.drawBitmap(mBitmap,canvas.getWidth()/2-200,canvas.getHeight()/2 - 200, mPaint);
+       /* mRect.left = canvas.getWidth()/2-400;
+        mRect.top = canvas.getHeight()/2;
+        mRect.right = canvas.getWidth()-400;
+        mRect.bottom = canvas.getHeight()/2+200;*/
+
+        //canvas.drawARGB(255,150,150,150);
+       // canvas.drawRect(canvas.getWidth()/2-400, canvas.getHeight()/2 - 300, canvas.getWidth()-400, canvas.getHeight()/2+200 , mPaint);
+       //canvas.drawBitmap(mBitmap,canvas.getWidth()/2-200,canvas.getHeight()/2 - 200, mPaint);
+       // canvas.drawBitmap(mBitmap,0,canvas.getHeight()/2 - 200, mPaint);
+
+     /*   mBitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.heart);
+        mPaint.setColor(Color.parseColor("#4D000000"));
+        canvas.drawBitmap(mBitmap,canvas.getWidth()/2-200,canvas.getHeight()/2 - 200, mPaint);*/
+
         mPaint.setTextSize(30);
         mPaint.setColor(Color.WHITE);
         mPaint.setFakeBoldText(true);
@@ -59,7 +59,9 @@ public class CustomDrawable extends Drawable {
         canvas.drawText("Left Bottom",16,canvas.getHeight() - 30,mPaint);
         canvas.drawText("Right Top",canvas.getWidth()  - 200,50,mPaint);
         canvas.drawText("Right Botton",canvas.getWidth()  - 200,canvas.getHeight() - 30,mPaint);
-        mBitmap.recycle();
+      //  canvas.restore();
+
+      //  mBitmap.recycle();
 
     }
 

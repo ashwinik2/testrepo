@@ -1,29 +1,24 @@
 package com.example.fragment_button_click.opengl;
 
+import android.opengl.GLES20;
+import android.util.Log;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
-import android.opengl.GLES20;
-import android.util.Log;
 
-import com.example.fragment_button_click.opengl.mGLRenderer;
+public class openglOverlaySquare {
 
-public class Square {
     private final String vertexShaderCode =
 
             "attribute vec3 vPosition;" +
-                    "attribute vec3 vColor;" +
-                    "varying vec3 v_Color; " +
                     "varying vec3 v_Position; " +
                     "uniform mat4 uMVPMatrix;" +
                     "attribute vec2 vTexture ;"+
                     "varying vec2 v_texCoordinate; " +
-
-
                     "void main() {" +
                     "gl_Position = uMVPMatrix * vec4(vPosition,1.0);" +
-                    "v_Color = vColor ;" +
                     "v_texCoordinate = vTexture;"+
 
                     "}";
@@ -31,20 +26,12 @@ public class Square {
     private final String fragmentShaderCode =
 
             "precision mediump float;" +
-                    "varying vec3 v_Color; " +
                     "varying vec2 v_texCoordinate;"+
                     "uniform sampler2D u_Texture_1;" +
-                    "uniform sampler2D u_Texture_2;" +
-                    "vec3 average = vec3(2,2,2);"  +
 
                     "void main() {" +
 
-                    "vec3 rgb_pixel_color_texture1 = texture2D(u_Texture_1, v_texCoordinate).rgb;"+
-                    "vec3 rgb_pixel_color_texture2 = texture2D(u_Texture_2, v_texCoordinate).rgb;"+
-
-                    "vec3 rgb_value_tex1_tex2 = (rgb_pixel_color_texture1+rgb_pixel_color_texture2);"+
-
-                    "vec3 result = rgb_value_tex1_tex2/average;"+
+                    "vec3 result = texture2D(u_Texture_1, v_texCoordinate).rgb;"+
                     //  "vec3 result = mix(texture2D(u_Texture_1, v_texCoordinate).rgb, texture2D(u_Texture_2, v_texCoordinate).rgb, 0.5);"+
 
                     "gl_FragColor = vec4(result,1.0);" +
@@ -54,7 +41,6 @@ public class Square {
 
     private final FloatBuffer mVertexBuffer;
     private final ShortBuffer mDrawListBuffer;
-    private final FloatBuffer mColorBuffer;
 
     private final int mProgram;
     private int mPositionHandle;
@@ -95,18 +81,6 @@ public class Square {
             0,   1,  2,  3,  4,  5,
     };
 
-    float color[] = {
-
-            // R, G, B,
-            0.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 0.0f,
-            0.0f, 0.0f, 0.0f,
-
-
-    };
     static float textureCoords[] = {
             0.0f,0.0f,
             0.0f,1.0f,
@@ -116,7 +90,7 @@ public class Square {
             1.0f,0.0f,
     };
 
-    public Square()
+    public openglOverlaySquare()
     {
         Log.i("square()","In Square Class");
         GLES20.glEnable(GLES20.GL_CULL_FACE);
@@ -134,13 +108,6 @@ public class Square {
         mDrawListBuffer.put(drawOrder);
         mDrawListBuffer.position(0);
 
-
-
-        ByteBuffer cb = ByteBuffer.allocateDirect(color.length * 4);
-        cb.order(ByteOrder.nativeOrder());
-        mColorBuffer = cb.asFloatBuffer();
-        mColorBuffer.put(color);
-        mColorBuffer.position(0);
 
         ByteBuffer tbuffer = ByteBuffer.allocateDirect(textureCoords.length * 4);
         tbuffer.order(ByteOrder.nativeOrder());
@@ -161,7 +128,8 @@ public class Square {
         GLES20.glLinkProgram(mProgram);
     }
 
-    public void draw(float[] mvpMatrix,int mTextureDataHandle_1,int mTextureDataHandle_2)
+
+    public void draw(float[] mvpMatrix,int mTextureDataHandle_1)
     {
 
         Log.i("draw()","In Square Class");
@@ -173,69 +141,6 @@ public class Square {
                 GLES20.GL_FLOAT, false,
                 vertexStride, mVertexBuffer);
 
-
-        mColorHandle= GLES20.glGetAttribLocation(mProgram, "vColor");
-        GLES20.glEnableVertexAttribArray(mColorHandle);
-        GLES20.glVertexAttribPointer(
-                mColorHandle, COLOR_COORDS_PER_VERTEX,
-                GLES20.GL_FLOAT, false,
-                colorvertexStride, mColorBuffer);
-
-        mTextureHandle = GLES20.glGetAttribLocation(mProgram, "vTexture");
-        GLES20.glEnableVertexAttribArray( mTextureHandle);
-        GLES20.glVertexAttribPointer(
-                mTextureHandle, TextCOORDS_PER_VERTEX,
-                GLES20.GL_FLOAT, false,
-                textureStride,mTextureBuffer);
-
-
-        mTextureUniformHandle[NUMBER_OF_TEXTURES_COUNT] = GLES20.glGetUniformLocation(mProgram,"u_Texture_1");
-        mGLRenderer.checkGlError("glGetUniformLocation");
-        GLES20.glActiveTexture(GLES20.GL_TEXTURE0+NUMBER_OF_TEXTURES_COUNT);
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D,mTextureDataHandle_1);
-        GLES20.glUniform1i( mTextureUniformHandle[NUMBER_OF_TEXTURES_COUNT], NUMBER_OF_TEXTURES_COUNT);
-
-        NUMBER_OF_TEXTURES_COUNT++;
-
-        mTextureUniformHandle[NUMBER_OF_TEXTURES_COUNT] = GLES20.glGetUniformLocation(mProgram,"u_Texture_2");
-        mGLRenderer.checkGlError("glGetUniformLocation");
-        GLES20.glActiveTexture(GLES20.GL_TEXTURE0+NUMBER_OF_TEXTURES_COUNT);
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D,mTextureDataHandle_2);
-        GLES20.glUniform1i( mTextureUniformHandle[NUMBER_OF_TEXTURES_COUNT], NUMBER_OF_TEXTURES_COUNT);
-
-        NUMBER_OF_TEXTURES_COUNT = 0;
-
-
-        mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uMVPMatrix");
-        //    MyGLRenderer.checkGlError("glGetUniformLocation");
-        GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mvpMatrix, 0);
-        //   MyGLRenderer.checkGlError("glUniformMatrix4fv");
-
-        GLES20.glDrawArrays(
-                GLES20.GL_TRIANGLES, 0,NUMBER_OF_VERTICES);
-
-        GLES20.glDisableVertexAttribArray(mPositionHandle);
-    }
-
-    public void draw1(float[] mvpMatrix,int mTextureDataHandle_1)
-    {
-
-        Log.i("draw()","In Square Class");
-        GLES20.glUseProgram(mProgram);
-        mPositionHandle = GLES20.glGetAttribLocation(mProgram, "vPosition");
-        GLES20.glEnableVertexAttribArray(mPositionHandle);
-        GLES20.glVertexAttribPointer(
-                mPositionHandle, COORDS_PER_VERTEX,
-                GLES20.GL_FLOAT, false,
-                vertexStride, mVertexBuffer);
-
-
-        mColorHandle= GLES20.glGetAttribLocation(mProgram, "vColor");
-        GLES20.glEnableVertexAttribArray(mColorHandle);
-        GLES20.glVertexAttribPointer(
-                mColorHandle, COLOR_COORDS_PER_VERTEX,
-                GLES20.GL_FLOAT, false,
-                colorvertexStride, mColorBuffer);
 
         mTextureHandle = GLES20.glGetAttribLocation(mProgram, "vTexture");
         GLES20.glEnableVertexAttribArray( mTextureHandle);

@@ -19,10 +19,9 @@ public class ControlViewRadioButton extends ControlViewModel {
     private int RADIO_BUTTON_ITEMVIEW_LIST;
     private View mView;
 
-    public ControlViewRadioButton(int itemViewListNumber) {
+    public ControlViewRadioButton() {
         super();
         Log.i("RadioButtonControlView","RadioButtonControlView");
-        RADIO_BUTTON_ITEMVIEW_LIST = itemViewListNumber;
         setRadioButtonNames();
 
     }

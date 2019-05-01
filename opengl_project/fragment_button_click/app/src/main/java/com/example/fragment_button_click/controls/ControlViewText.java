@@ -17,10 +17,9 @@ public class ControlViewText extends ControlViewModel {
     private View mView;
     private TextView mSimpleTextView;
 
-    public ControlViewText(@NonNull final String simpleText,int itemViewListNumber) {
+    public ControlViewText(@NonNull final String simpleText) {
         super();
         setSimpleText(simpleText);
-        TEXT_ITEMVIEW_LIST = itemViewListNumber;
     }
     public void setView(View view, final Context mContext){
         Log.i("setview()","TextControlView");

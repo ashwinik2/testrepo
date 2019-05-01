@@ -17,11 +17,10 @@ public class ControlViewImageButton extends ControlViewModel {
     private ImageButton mImageButton;
     private int IMAGEBUTTON_ITEMVIEW_LIST;
 
-    public ControlViewImageButton(int itemViewListNumber,final Context context)
+    public ControlViewImageButton(final Context context)
     {
         super();
         Log.i("ControlViewImageButon()","ControlViewImageButton");
-        IMAGEBUTTON_ITEMVIEW_LIST = itemViewListNumber;
         mContext = context;
 
     }
