@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'abcdefg'
             keyPassword 'abcdefg'
-            storeFile file('C:/Users/prasanna/testrepo/testrepo/sample3.c')
+            //storeFile file('C:/Users/prasanna/testrepo/testrepo/sample3.c')
             storePassword 'abcdefg'
         }
     }
@@ -17,6 +17,20 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+
+      externalNativeBuild
+                {
+                    ndk
+                            {
+                                moduleName "Datarenderer"
+                            }
+                    ndk
+                            {
+                                abiFilters "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
+                            }
+                }
+
     }
     buildTypes {
         release {
@@ -26,12 +40,21 @@ android {
     }
   sourceSets {
         main {
-          //  manifest.srcFile 'AndroidManifest.xml'
+            //  manifest.srcFile 'AndroidManifest.xml'
             //java.srcDirs = ['java']
             //resources.srcDirs = ['java']
             manifest.srcFile "src/main/AndroidManifest.xml"      // AndroidManifest
             java.srcDirs = ["src/main/java"]
             resources.srcDirs = ["src/main/res"]
+            jniLibs.srcDirs = ["src/main/jniLibs"]
+
+        }
+
+    }
+    externalNativeBuild {
+        ndkBuild {
+            path file('../jni/Android.mk')
+            path file('../jni/Application.mk')
         }
     }
 }

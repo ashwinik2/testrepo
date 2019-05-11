@@ -58,10 +58,10 @@ public class ControlViewContainer extends Fragment implements OnStartDragListene
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(mAdapter);
-
-        mTouchHelper.attachToRecyclerView(recyclerView);
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
                 DividerItemDecoration.VERTICAL));
+        mTouchHelper.attachToRecyclerView(recyclerView);
+
       /*  DividerItemDecoration itemDecorator = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         itemDecorator.setDrawable(ContextCompat.getDrawable(getContext(), R.drawable.divider));*/
         //recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).build());
@@ -75,9 +75,13 @@ public class ControlViewContainer extends Fragment implements OnStartDragListene
         switch (controlmode)
         {
             case CONTROL_MODE0:
-                ControlViewModelList.add(new ControlViewButton(mContext));
+               /* ControlViewModelList.add(new ControlViewButton(mContext));
                 ControlViewModelList.add(new ControlViewText(String.format(Locale.US, "Text Item View", 1)));
-                ControlViewModelList.add(new ControlViewRadioButton());
+                ControlViewModelList.add(new ControlViewRadioButton());*/
+                ControlViewModelList.add(new ControlViewText(String.format(Locale.US, "Text Item View", 1)));
+                ControlViewModelList.add(new ControlViewText(String.format(Locale.US, "Text Item View", 1)));
+                ControlViewModelList.add(new ControlViewText(String.format(Locale.US, "Text Item View", 1)));
+                ControlViewModelList.add(new ControlViewText(String.format(Locale.US, "Text Item View", 1)));
                 break;
 
             case CONTROL_MODE1:

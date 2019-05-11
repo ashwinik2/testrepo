@@ -58,9 +58,9 @@ public class MainActivity extends AppCompatActivity
         CustomView mView = new CustomView(this);
         mConstraint.addView(mView);*/
 
-        FrameLayout mframelayout = findViewById(R.id.glsurfaceview_container);
+       /* FrameLayout mframelayout = findViewById(R.id.glsurfaceview_container);
         CustomView mView = new CustomView(this);
-        mframelayout.addView(mView);
+        mframelayout.addView(mView);*/
 
     }
 

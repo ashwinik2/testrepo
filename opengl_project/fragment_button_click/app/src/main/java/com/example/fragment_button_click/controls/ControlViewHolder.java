@@ -5,7 +5,11 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.fragment_button_click.R;
 
 public class ControlViewHolder extends RecyclerView.ViewHolder {
 

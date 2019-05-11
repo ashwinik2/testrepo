@@ -73,6 +73,5 @@ LOCAL_SRC_FILES := $(call all-c-files-under, jni)
 LOCAL_MODULE := mypackage_jni
 
 include $(BUILD_SHARED_LIBRARY)
-
 #ndk-build NDK_PROJECT_PATH=. APP_PLATFORM=android-18  APP_BUILD_SCRIPT=c:\Users\prasanna\testrepo\testrepo\opengl_project\fragment_button_click\Android.mk
 

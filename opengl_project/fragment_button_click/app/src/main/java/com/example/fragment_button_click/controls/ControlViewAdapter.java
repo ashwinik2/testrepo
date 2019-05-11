@@ -1,10 +1,8 @@
 package com.example.fragment_button_click.controls;
 
 import android.content.Context;
-import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -45,6 +43,7 @@ public class ControlViewAdapter extends RecyclerView.Adapter  implements ItemTou
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position)
     {
+
         Log.i("onBindViewHolder()","ControlViewAdapter");
         ((ControlViewHolder)holder).bindData(models.get(position),getItemViewType(position));
         /*holder.msetOnTouchListener(new View.OnTouchListener()
@@ -82,7 +81,7 @@ public class ControlViewAdapter extends RecyclerView.Adapter  implements ItemTou
    @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
        Log.i("onItemMove","ControlViewAdapter");
-        /*if (fromPosition < toPosition) {
+        if (fromPosition < toPosition) {
             for (int i = fromPosition; i < toPosition; i++) {
                 Collections.swap(models, i, i + 1);
             }
@@ -90,10 +89,10 @@ public class ControlViewAdapter extends RecyclerView.Adapter  implements ItemTou
             for (int i = fromPosition; i > toPosition; i--) {
                 Collections.swap(models, i, i - 1);
             }
-        }*/
-       Collections.swap(models, fromPosition, toPosition);
-        notifyItemMoved(fromPosition, toPosition);
-        return true;
+        }
+       //Collections.swap(models, fromPosition, toPosition);
+       notifyItemMoved(fromPosition, toPosition);
+       return true;
     }
 
     @Override
