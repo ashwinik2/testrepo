@@ -10,7 +10,7 @@
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/mat4x4.hpp>
-#include <include\GlErrorLogger.h>
+#include <GlErrorLogger.h>
 class ModeDrawable
 {
 public:
@@ -20,7 +20,7 @@ public:
     void checkGlError(std::string string);
     void load();
     void updateViewMatrix();
-    void update(/*const void* data, size_t dataLen*/);
+    void update(unsigned char* data/*, size_t dataLen*/);
     void draw(const glm::mat4& projMat);
     void checkShaderCompileError(int shader,GLenum shaderType);
     int loadShader(int type, const char* src);
@@ -33,7 +33,7 @@ private:
     GLuint mProgram = 0;
     GLint mMVPMatrixHandle = -1;
     GLint mTextureUniformHandle = -1;
-    GLint mTextureDataHandle = -1;
+    GLuint mTextureDataHandle = -1;
     GLint mVertexPosHandle = -1;
     GLint mTexturePosHandle = -1;
     GLint mColorValHandle = -1;
@@ -51,6 +51,7 @@ private:
     GLuint mTextureBuffer;
     GLuint mVertexShaderID;
     GLuint mFragmentShaderID;
+
     glm::mat4 mMVPMatrix, mViewMatrix;
     GLuint vao;
     int type =0;

@@ -7,7 +7,7 @@
 #include <GLES2/gl2.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include<include\ModeDrawable.h>
+#include<ModeDrawable.h>
 #include <android/log.h>
 using namespace std;
 using glm::vec3;
@@ -105,7 +105,6 @@ void ModeDrawable::load()
     "uniform mat4 uMVPMatrix;\n"
     "void main() {\n"
         "gl_Position = uMVPMatrix * vec4(vPosition,1.0);\n"
-        //"gl_Position =  vec4(vPosition,1.0);\n"
         "v_Color = vColorValues;\n"
         "v_TextCoords = vTextCoards;\n"
     "}\n";
@@ -135,13 +134,9 @@ void ModeDrawable::load()
         __android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "ModeDrawable::load() mColorBuffer glGenBuffers");
         checkGlError("glGenBuffers");
 
-    //mVertexShaderID = loadShader(GL_VERTEX_SHADER,vertexShaderCode);
-    //mFragmentShaderID = loadShader(GL_FRAGMENT_SHADER,fragmentShaderCode);
-
-
     mVertexShaderID = glCreateShader(GL_VERTEX_SHADER);
     mFragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0.5f, 0.8f, 0.8f, 0.0f);
     const char *adapter[1];
      adapter[0] = vertexShaderCode;
     glShaderSource(mVertexShaderID, 1,adapter,0);
@@ -179,7 +174,11 @@ void ModeDrawable::load()
     checkGlError("glUseProgram");
 
     mMVPMatrixHandle = glGetUniformLocation(mProgram, "uMVPMatrix");
+    glGenTextures(1, &mTextureDataHandle);
+        __android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "ModeDrawable::load() glUseprogram");
+        checkGlError("glGenTextures");
     mFramebuffer = new unsigned char[mFrameSize];
+
     glUseProgram(0);
 
 }
@@ -210,7 +209,6 @@ void ModeDrawable::load()
 
 void ModeDrawable::draw(const glm::mat4& projMat)
 {
-    update();
     __android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "ModeDrawable::draw()");
 
     glUseProgram(mProgram);
@@ -263,23 +261,23 @@ void ModeDrawable::draw(const glm::mat4& projMat)
     checkGlError("glVertexAttribPointer");
 
 
-    mViewMatrix = glm::lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1.0, 0.0));
+   mViewMatrix = glm::lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1.0, 0.0));
     glm::mat4 trans= glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, 0.0));
-    //glm::mat4 scale1= glm::scale(glm::mat4(1.0f), glm::vec3(1.5, 1.5, 0.5));
+       //glm::mat4 scale1= glm::scale(glm::mat4(1.0f), glm::vec3(1.5, 1.5, 0.5));
     glm::mat4 modelViewProjMat = projMat * mViewMatrix *trans /**scale1*/ ;
     __android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "ModeDrawable::draw() glUseprogram");
 
     mTextureUniformHandle= glGetUniformLocation(mProgram,"u_Texture");
     glActiveTexture(GL_TEXTURE0);
     checkGlError("glActiveTexture");
-    glBindTexture(GL_TEXTURE_2D, mTextureBuffer);
-    checkGlError("glActiveTexture");
+    glBindTexture(GL_TEXTURE_2D, mTextureDataHandle);
+    checkGlError("glBindTexture");
 
     glUniformMatrix4fv(mMVPMatrixHandle, 1, false, glm::value_ptr(modelViewProjMat));
     checkGlError("glUniformMatrix4fv");
-    // glUniformMatrix4fv(mMVPMatrixHandle, 1, false, &modelViewProjMat[0][0]);
     glUniform1i(mTextureUniformHandle,0);
     checkGlError("glUniformli");
+
     glDrawArrays(GL_TRIANGLES, 0, mNumberofVertices);
     checkGlError("glDrawArrays");
      __android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "ModeDrawable::draw() glDrawArrays");
@@ -301,47 +299,27 @@ void ModeDrawable::updateViewMatrix()
     mViewMatrix = trans;
 }
 
-void ModeDrawable::update(/*const void* data, size_t dataLen*/)
+void ModeDrawable::update(unsigned char* data/*, size_t dataLen*/)
 {
     __android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "ModeDrawable::update()");
-    if(mFramebuffer != nullptr)
-    {
-        for (i = 0; i < (cols *rows); i++)
-             {
-                mRed = rand() % 255;
-                mGreen = rand() % 255;
-                mBlue = rand() % 255;
-               // mGrayValue = (mRed + mGreen + mBlue)/3;
-                mGrayValue = ((mRed * 0.30) + (mGreen * 0.59) + (mBlue * 0.11))/3;
-                mRed = mGrayValue;
-                mGreen = mGrayValue;
-                mBlue = mGrayValue;
-
-
-                mFramebuffer[(i*4)+0] = (unsigned char)mRed;
-                mFramebuffer[(i*4)+1] = (unsigned char)mGreen;
-                mFramebuffer[(i*4)+2] = (unsigned char)mBlue;
-                mFramebuffer[(i*4)+3] = 255;
-            }
-    }
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+     __android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "ModeDrawable::glPixelStorei()");
     checkGlError("glPixelStorei");
 
-    glBindTexture(GL_TEXTURE_2D, mTextureBuffer);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, mTextureDataHandle);
     checkGlError("glBindTexture");
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, cols, rows, 0, GL_RGBA, GL_UNSIGNED_BYTE, mFramebuffer);
-
-   // glTexImage2D(GL_TEXTURE_2D, 0, 0,cols, rows,0, GL_RGB, GL_UNSIGNED_BYTE, mFramebuffer);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, cols, rows, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
     checkGlError("glTexImage2D");
 
     glBindTexture(GL_TEXTURE_2D, 0);
     checkGlError("glBindTexture");
 
-    /*glPixelStorei(GL_UNPACK_ALIGNMENT, 0);
-    checkGlError("glPixelStorei");*/
+  //  glPixelStorei(GL_UNPACK_ALIGNMENT, 0);
+   // checkGlError("glPixelStorei");
 
 }

@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.commit();
 
         Log.i("MainActivity","After ControlButton and GLSurfaceView Container created");
-        frameLayout = findViewById(R.id.glsurfaceview_container);
+        frameLayout = (FrameLayout)findViewById(R.id.glsurfaceview_container);
         viewOverlayText = frameLayout.getOverlay();
         mCustomDraw = new CustomDrawable(this);
         viewOverlayText.add(mCustomDraw);

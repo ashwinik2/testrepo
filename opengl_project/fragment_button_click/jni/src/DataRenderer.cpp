@@ -8,8 +8,8 @@
 #include <unistd.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <android/log.h>
-#include <include\ModeDrawable.h>
-#include <include\DataRenderer.h>
+#include <ModeDrawable.h>
+#include <DataRenderer.h>
 
 using namespace std;
 DataRenderer* DataRenderer::s_instance = nullptr;
@@ -19,6 +19,7 @@ DataRenderer* DataRenderer::Instance()
     if (s_instance == nullptr)
     {
         s_instance = new DataRenderer();
+
     }
     return s_instance;
 }
@@ -34,7 +35,6 @@ DataRenderer::~DataRenderer()
 
 }
 
-
 void DataRenderer::onDrawFrame()
 {
     __android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "DataRenderer ::onDrawFrame");
@@ -44,6 +44,8 @@ void DataRenderer::onDrawFrame()
    if(mModeDrawable != nullptr)
     {
          __android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "DataRenderer::onDrawFrame when mModeDrawable != nullptr call draw");
+         mFrameGenerator -> GetFrame(mFrameBuffer);
+         mModeDrawable->update(mFrameBuffer);
          mModeDrawable->draw(mProjectionMatrix);
     }
 
@@ -51,6 +53,7 @@ void DataRenderer::onDrawFrame()
 
 void DataRenderer::onSurfaceChanged(int width, int height)
 {
+
     __android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, " DataRenderer:: onSurfaceChanged");
     mSurfaceWidth = width;
     mSurfaceHeight = height;
@@ -76,12 +79,8 @@ void DataRenderer::onSurfaceCreated(EGLConfig config)
     glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);
     mModeDrawable = new ModeDrawable();
-    if(mModeDrawable != nullptr)
-    {
-        __android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "DataRenderer::onSurfaceCreated when mModeDrawable != nullptr call load");
-        //mModeDrawable ->load();
-    }
-   // mFrameGenerator = new FrameGenerator();
+    mFrameGenerator = new FrameGenerator();
+    mFrameBuffer = new unsigned char[mFrameSize];
 }
 
 

@@ -54,7 +54,7 @@ public class ControlViewContainer extends Fragment implements OnStartDragListene
         mTouchHelper = new ItemTouchHelper(callback);
 
         mControlView = inflater.inflate(R.layout.control_view_container, container,false);
-        RecyclerView recyclerView =  mControlView.findViewById(R.id.recycle_view);
+        RecyclerView recyclerView =  (RecyclerView)mControlView.findViewById(R.id.recycle_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(mAdapter);

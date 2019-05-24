@@ -1,6 +1,5 @@
-./obj/local/x86_64/objs-debug/Datarenderer/src\FrameGenerator.o: \
-  jni/src\FrameGenerator.cpp \
-  C:\Users\prasanna\testrepo\testrepo\opengl_project\fragment_button_click\jni\include\FrameGenerator.h \
+./obj/local/arm64-v8a/objs-debug/Datarenderer/src\FrameGenerator.o: \
+  jni/src\FrameGenerator.cpp jni\include\FrameGenerator.h \
   C:/Users/prasanna/AppData/Local/Android/Sdk/ndk-bundle/build//../sources/cxx-stl/llvm-libc++/include\vector \
   C:/Users/prasanna/AppData/Local/Android/Sdk/ndk-bundle/build//../sources/cxx-stl/llvm-libc++/include\__config \
   C:/Users/prasanna/AppData/Local/Android/Sdk/ndk-bundle/build//../sources/cxx-stl/llvm-libc++/include\iosfwd \
@@ -35,9 +34,11 @@
   C:/Users/prasanna/AppData/Local/Android/Sdk/ndk-bundle/build//../sources/cxx-stl/llvm-libc++/include\functional \
   C:/Users/prasanna/AppData/Local/Android/Sdk/ndk-bundle/build//../sources/cxx-stl/llvm-libc++/include\climits \
   C:/Users/prasanna/AppData/Local/Android/Sdk/ndk-bundle/build//../sources/cxx-stl/llvm-libc++/include\limits.h \
-  C:/Users/prasanna/AppData/Local/Android/Sdk/ndk-bundle/build//../sources/cxx-stl/llvm-libc++/include\__split_buffer
+  C:/Users/prasanna/AppData/Local/Android/Sdk/ndk-bundle/build//../sources/cxx-stl/llvm-libc++/include\__split_buffer \
+  jni\include\GlErrorLogger.h jni\CL/cl.h jni\CL/cl_platform.h \
+  C:/Users/prasanna/AppData/Local/Android/Sdk/ndk-bundle/build//../sources/cxx-stl/llvm-libc++/include\stddef.h
 
-C:\Users\prasanna\testrepo\testrepo\opengl_project\fragment_button_click\jni\include\FrameGenerator.h:
+jni\include\FrameGenerator.h:
 
 C:/Users/prasanna/AppData/Local/Android/Sdk/ndk-bundle/build//../sources/cxx-stl/llvm-libc++/include\vector:
 
@@ -108,3 +109,11 @@ C:/Users/prasanna/AppData/Local/Android/Sdk/ndk-bundle/build//../sources/cxx-stl
 C:/Users/prasanna/AppData/Local/Android/Sdk/ndk-bundle/build//../sources/cxx-stl/llvm-libc++/include\limits.h:
 
 C:/Users/prasanna/AppData/Local/Android/Sdk/ndk-bundle/build//../sources/cxx-stl/llvm-libc++/include\__split_buffer:
+
+jni\include\GlErrorLogger.h:
+
+jni\CL/cl.h:
+
+jni\CL/cl_platform.h:
+
+C:/Users/prasanna/AppData/Local/Android/Sdk/ndk-bundle/build//../sources/cxx-stl/llvm-libc++/include\stddef.h:

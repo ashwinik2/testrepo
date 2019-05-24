@@ -5,8 +5,8 @@
 #include <string>
 #include <glm/gtc/matrix_transform.hpp>
 #include <EGL/egl.h>
-#include <include\DataRenderer.h>
-#include <include\GlErrorLogger.h>
+#include <DataRenderer.h>
+#include <GlErrorLogger.h>
 #include <android/log.h>
 
 //DataRenderer1 *mDataRenderer;

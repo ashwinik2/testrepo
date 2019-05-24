@@ -39,7 +39,7 @@ public class ControlViewButton extends ControlViewModel {
             throw new ClassCastException("Control_Button_Container crashed"
                     + " must implement buttonClicked");
         }
-        Button mButtonStart = mView.findViewById(R.id.button_start);
+        Button mButtonStart = (Button)mView.findViewById(R.id.button_start);
         mButtonStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,7 +49,7 @@ public class ControlViewButton extends ControlViewModel {
             }
         });
 
-        Button mButtonStop = mView.findViewById(R.id.button_stop);
+        Button mButtonStop = (Button)mView.findViewById(R.id.button_stop);
         mButtonStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
