@@ -8,13 +8,13 @@ LOCAL_MODULE := libDatarenderer
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/glm \
 			$(LOCAL_PATH)/include \
 			$(LOCAL_PATH)/../external \
-			external/opencv3/include/opencv \
-			external/opencv3/modules/core/include \
-			external/opencv3/modules/hal/include \
-			external/opencv3/modules/imgproc/include \
-			external/opencv3/modules/photo/include \
-			external/opencv3/modules/video/include \
-			external/opencv3/modules/objdetect/include
+			$(LOCAL_PATH)/../external/opencv3/include/opencv \
+			$(LOCAL_PATH)/../external/opencv3/modules/core/include \
+			$(LOCAL_PATH)/../external/opencv3/modules/hal/include \
+			$(LOCAL_PATH)/../external/opencv3/modules/imgproc/include \
+			$(LOCAL_PATH)/../external/opencv3/modules/photo/include \
+			$(LOCAL_PATH)/../external/opencv3/modules/video/include \
+			$(LOCAL_PATH)/../external/opencv3/modules/objdetect/include
 LOCAL_CPPFLAGS += \
                 -std=c++14 \
                 -fPIC \
