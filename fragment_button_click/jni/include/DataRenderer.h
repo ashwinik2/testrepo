@@ -40,7 +40,7 @@ private:
     int mBlue = 0;
     int mGrayValue = 0;
     unsigned char *mFrameBuffer;
-
+    int cl_device_ready = 0;	
 
 
 };

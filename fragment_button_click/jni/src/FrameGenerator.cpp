@@ -3,6 +3,11 @@
 #include <vector>
 #include <android/log.h>
 #include <CL/cl.h>
+#include<string.h>
+#include<iostream>
+#include <sstream>
+using namespace std;
+std::string clOperation;
 FrameGenerator::FrameGenerator()
 {
     //mFrameBuffer = new unsigned char[mFrameSize];
@@ -15,7 +20,46 @@ FrameGenerator::~FrameGenerator()
 
     __android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "~FrameGenerator()");
 }
-void FrameGenerator::GetFrame(unsigned char* mFrameBuffer)
+void FrameGenerator::checkClError(/*std::string clOperation,*/int err)
+{
+     __android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "checkClError : NoError()");
+
+
+    switch(err) {
+
+        case -32:
+            MyLOGE("CL_INVALID_PLATFORM: CLenum no platform selected");
+            break;
+
+        case -30:
+            MyLOGE("CL_INVALID_VALUE: numeric argument out of range");
+            break;
+
+
+        case -1:
+	    MyLOGE( "CL_DEVICE_NOT_FOUND: not enough memory left to execute command");
+            break;
+
+        case -2:
+	    MyLOGE( "CL_DEVICE_NOT_AVAILABLE: not enough memory left to execute command");
+            break;
+
+
+        case -6:
+            MyLOGE( "CL_OUT_OFHOST__MEMORY: not enough memory left to execute command");
+            break;
+
+        case -31:
+            MyLOGE( "CL_INVALID_DEVICE_TYPE_: not enough memory left to execute command");
+            break;
+
+        default:
+            MyLOGE("unlisted error");
+            break;
+    }
+}
+
+void FrameGenerator::GetFrame(unsigned char* mFrameBuffer,int &cl_device_ready)
 {
     __android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "FrameGenerator::GetFrame()");
      for (i = 0; i < (cols *rows); i++)
@@ -34,7 +78,7 @@ void FrameGenerator::GetFrame(unsigned char* mFrameBuffer)
         mFrameBuffer[(i*4)+3] = 255;
     }
     //return mFrameBuffer;
-#if 0
+//#if 0
     const char *KernelSource = "\n" \
     "__kernel void square(                                                       \n" \
     "   __global unsigned char* input,                                              \n" \
@@ -54,7 +98,7 @@ void FrameGenerator::GetFrame(unsigned char* mFrameBuffer)
 
         size_t global;                      // global domain size for our calculation
         size_t local;                       // local domain size for our calculation
-
+	cl_platform_id platform;
         cl_device_id device_id;             // compute device id
         cl_context context;                 // compute context
         cl_command_queue commands;          // compute command queue
@@ -73,14 +117,26 @@ void FrameGenerator::GetFrame(unsigned char* mFrameBuffer)
 
         // Connect to a compute device
         //
+	err = clGetPlatformIDs(1, &platform, NULL);
+   	if(err < 0) 
+	{
+      		perror("Couldn't identify a platform");
+		DRLOGF("clGetPlatformIDs err is %d", err);
+      		exit(1);
+   	}
 
-        err = clGetDeviceIDs(NULL, CL_DEVICE_TYPE_CPU, 1, &device_id, NULL);
+        err = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device_id, NULL);
         if (err != CL_SUCCESS)
         {
 		__android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "FrameGenerator::clGetDeviceIDs()");
             printf("Error: Failed to create a device group!\n");
-            //return EXIT_FAILURE;
+           // return EXIT_FAILURE;
+
+	DRLOGF("clDeviceID err is %d", err);
+        checkClError(/*clGetDeviceID,*/err);
+     	exit(1);
         }
+
 
         // Create a compute context
         //
@@ -89,17 +145,36 @@ void FrameGenerator::GetFrame(unsigned char* mFrameBuffer)
         {
 		__android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "FrameGenerator::clCreateContext()");
             printf("Error: Failed to create a compute context!\n");
-            //return EXIT_FAILURE;
+           // return EXIT_FAILURE;
+
+            exit(1);
         }
+
+/*        context = clCreateContextFromType(0, CL_DEVICE_TYPE_GPU,  NULL, NULL, NULL);
+        if (!context)
+        {
+		__android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "FrameGenerator::clCreateContext()");
+            printf("Error: Failed to create a compute context!\n");
+           // return EXIT_FAILURE;
+        checkClError("clcreateContextFromType");	
+            exit(1);
+        }
+	size_t szParamDataBytes;
+	clGetContextInfo(context,CL_CONTEXT_DEVICES, 0, NULL ,&szParamDataBytes);
+	device_id =(cl_device_id*)malloc(szParamDataBytes);
+	clGetContextInfo(context,CL_CONTEXT_DEVICES,szParamDataBytes,device_id,NULL);*/
+
 
         // Create a command commands
         //
-        commands = clCreateCommandQueue(context, device_id, 0, &err);
+        commands = clCreateCommandQueue(context, device_id, 0, NULL);
         if (!commands)
         {
 		__android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "FrameGenerator::clCreateCommandQueue()");
             printf("Error: Failed to create a command commands!\n");
-            //return EXIT_FAILURE;
+//            return EXIT_FAILURE;
+
+            exit(1);
         }
 
         // Create the compute program from the source buffer
@@ -109,7 +184,9 @@ void FrameGenerator::GetFrame(unsigned char* mFrameBuffer)
         {
 		__android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "FrameGenerator::clCreateProgramWithSource()");
             printf("Error: Failed to create compute program!\n");
-            //return EXIT_FAILURE;
+//            return EXIT_FAILURE;
+
+            exit(1);
         }
 
         // Build the program executable
@@ -121,7 +198,7 @@ void FrameGenerator::GetFrame(unsigned char* mFrameBuffer)
             char buffer[2048];
 
             printf("Error: Failed to build program executable!\n");
-            clGetProgramBuildInfo(program, device_id, CL_PROGRAM_BUILD_LOG, sizeof(buffer), buffer, &len);
+         //   clGetProgramBuildInfo(program, device_id, CL_PROGRAM_BUILD_LOG, sizeof(buffer), buffer, &len);
 		__android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "FrameGenerator::clGetProgramBuildInfo()");
             printf("%s\n", buffer);
             exit(1);
@@ -173,18 +250,19 @@ void FrameGenerator::GetFrame(unsigned char* mFrameBuffer)
 
         // Get the maximum work group size for executing the kernel on the device
         //
-        err = clGetKernelWorkGroupInfo(kernel, device_id, CL_KERNEL_WORK_GROUP_SIZE, sizeof(local), &local, NULL);
+       /* err = clGetKernelWorkGroupInfo(kernel, device_id, CL_KERNEL_WORK_GROUP_SIZE, sizeof(local), &local, NULL);
         if (err != CL_SUCCESS)
         {
 		__android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "FrameGenerator::clGetKernelWorkGroupInfo()");
             printf("Error: Failed to retrieve kernel work group info! %d\n", err);
             exit(1);
-        }
+        }*/
 
         // Execute the kernel over the entire range of our 1d input data set
         // using the maximum number of work group items for this device
         //
         global = mFrameSize;
+	local = 64;
         err = clEnqueueNDRangeKernel(commands, kernel, 1, NULL, &global, &local, 0, NULL, NULL);
         if (err)
         {
@@ -214,8 +292,11 @@ void FrameGenerator::GetFrame(unsigned char* mFrameBuffer)
         clReleaseKernel(kernel);
         clReleaseCommandQueue(commands);
         clReleaseContext(context);
-	mSimpleOpenCV = new SimpleOpenCV();
-        mSimpleOpenCV->CreateMat();
-#endif	
+	cl_device_ready =1;
+//	mSimpleOpenCV = new SimpleOpenCV();
+//mSimpleOpenCV->CreateMat();
+//#endif
+		
+	cl_device_ready =1;
 }
 

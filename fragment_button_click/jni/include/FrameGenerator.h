@@ -10,7 +10,8 @@ class FrameGenerator
 public:
     FrameGenerator ();
     ~FrameGenerator ();
-    void GetFrame( unsigned char *mFrameBuffer);
+    void GetFrame( unsigned char *mFrameBuffer,int &cl_device_ready);
+    void checkClError(/*std::string clOperation,*/int err);
 
 private:
     int cols = 10;

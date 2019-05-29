@@ -44,9 +44,13 @@ void DataRenderer::onDrawFrame()
    if(mModeDrawable != nullptr)
     {
          __android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "DataRenderer::onDrawFrame when mModeDrawable != nullptr call draw");
-         mFrameGenerator -> GetFrame(mFrameBuffer);
-         mModeDrawable->update(mFrameBuffer);
-         mModeDrawable->draw(mProjectionMatrix);
+         mFrameGenerator -> GetFrame(mFrameBuffer,cl_device_ready);
+	 if(cl_device_ready == 1)
+	 {
+         	mModeDrawable->update(mFrameBuffer);
+        	 mModeDrawable->draw(mProjectionMatrix);
+		 cl_device_ready = 0;
+	 }
     }
 
 }
