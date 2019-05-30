@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <GlErrorLogger.h>
+#include<FrameOpenCL.h>
 #include<SimpleOpenCV.h>
 #include <CL/cl.h>
 class FrameGenerator
@@ -23,7 +24,8 @@ private:
     unsigned char mGrayValue = 0;
    // unsigned char *mFrameBuffer;
     const int mFrameSize = cols*rows*4;
-SimpleOpenCV*  mSimpleOpenCV = nullptr;
+    FrameOpenCL* mFrameOpenCL = nullptr;
+   // SimpleOpenCV*  mSimpleOpenCV = nullptr;
 
 };
 

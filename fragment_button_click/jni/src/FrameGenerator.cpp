@@ -78,7 +78,7 @@ void FrameGenerator::GetFrame(unsigned char* mFrameBuffer,int &cl_device_ready)
         mFrameBuffer[(i*4)+3] = 255;
     }
     //return mFrameBuffer;
-//#if 0
+#if 0
     const char *KernelSource = "\n" \
     "__kernel void square(                                                       \n" \
     "   __global unsigned char* input,                                              \n" \
@@ -124,7 +124,69 @@ void FrameGenerator::GetFrame(unsigned char* mFrameBuffer,int &cl_device_ready)
 		DRLOGF("clGetPlatformIDs err is %d", err);
       		exit(1);
    	}
+void FrameGenerator::GetFrame(unsigned char* mFrameBuffer,int &cl_device_ready)
+{
+    __android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "FrameGenerator::GetFrame()");
+     for (i = 0; i < (cols *rows); i++)
+     {
+        mRed = rand() % 255;
+        mGreen = rand() % 255;
+        mBlue = rand() % 255;
+        mGrayValue = ((mRed * 0.30) + (mGreen * 0.59) + (mBlue * 0.11))/3;
+        mRed = mGrayValue;
+        mGreen = mGrayValue;
+        mBlue = mGrayValue;
 
+        mFrameBuffer[(i*4)+0] = mRed;
+        mFrameBuffer[(i*4)+1] = mGreen;
+        mFrameBuffer[(i*4)+2] = mBlue;
+        mFrameBuffer[(i*4)+3] = 255;
+    }
+    //return mFrameBuffer;
+//#if 0
+    const char *KernelSource = "\n" \
+    "__kernel void square(                                                       \n" \
+    "   __global unsigned char* input,                                              \n" \
+    "   __global unsigned char* output,                                             \n" \
+    "   const int count)                                           \n" \
+    "{                                                                      \n" \
+    "   int i = get_global_id(0);                                           \n" \
+    "   if(i < count)                                                       \n" \
+    "       output[i] = input[i] * input[i];                                \n" \
+    "}                                                                      \n" \
+    "\n";
+       int err;                            // error code returned from api calls
+        int DATA_SIZE =100;
+        float data[DATA_SIZE];              // original data set given to device
+        unsigned char results[DATA_SIZE];           // results returned from device
+        unsigned int correct;               // number of correct results returned
+
+        size_t global;                      // global domain size for our calculation
+        size_t local;                       // local domain size for our calculation
+        cl_platform_id platform;
+        cl_device_id device_id;             // compute device id
+        cl_context context;                 // compute context
+        cl_command_queue commands;          // compute command queue
+        cl_program program;                 // compute program
+        cl_kernel kernel;                   // compute kernel
+
+        cl_mem input;                       // device memory used for the input array
+        cl_mem output;                      // device memory used for the output array
+
+        // Fill our data set with random float values
+        //
+        int i = 0;
+       /* unsigned int count = DATA_SIZE;
+        for(i = 0; i < count; i++)
+            data[i] = rand() / (float)RAND_MAX;*/
+
+        // Connect to a compute device
+        //
+        err = clGetPlatformIDs(1, &platform, NULL);
+        if(err < 0)
+        {
+                perror("Couldn't identify a platform");
+	}                                                 
         err = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device_id, NULL);
         if (err != CL_SUCCESS)
         {
@@ -295,8 +357,9 @@ void FrameGenerator::GetFrame(unsigned char* mFrameBuffer,int &cl_device_ready)
 	cl_device_ready =1;
 	mSimpleOpenCV = new SimpleOpenCV();
 	mSimpleOpenCV->CreateMat();
-//#endif
-		
-	cl_device_ready =1;
+#endif
+	mFrameOpenCL = new FrameOpenCL();
+	mFrameOpenCL -> ProcessFrame(mFrameBuffer, cl_device_ready, mFrameSize);	
+	//cl_device_ready =1;
 }
 
