@@ -293,8 +293,8 @@ void FrameGenerator::GetFrame(unsigned char* mFrameBuffer,int &cl_device_ready)
         clReleaseCommandQueue(commands);
         clReleaseContext(context);
 	cl_device_ready =1;
-//	mSimpleOpenCV = new SimpleOpenCV();
-//mSimpleOpenCV->CreateMat();
+	mSimpleOpenCV = new SimpleOpenCV();
+	mSimpleOpenCV->CreateMat();
 //#endif
 		
 	cl_device_ready =1;

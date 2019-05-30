@@ -36,7 +36,7 @@ LOCAL_SRC_FILES := src/jniRenderer.cpp \
                     src/DataRenderer.cpp \
                     src/ModeDrawable.cpp \
                     src/FrameGenerator.cpp \
-#                    src/SimpleOpenCV.cpp
+                    src/SimpleOpenCV.cpp
 include $(BUILD_SHARED_LIBRARY)
 
 
