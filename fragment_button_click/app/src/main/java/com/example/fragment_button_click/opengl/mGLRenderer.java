@@ -44,11 +44,18 @@ public class mGLRenderer implements GLSurfaceView.Renderer {
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
 
         Log.i("onSurfaceCreated","In mGLRenderer Class");
-
+	
         Log.i("onSurfaceCreated", GLES20.glGetString(GLES20.GL_VERSION));
         Log.i("onSurfaceCreated", GLES20.glGetString(GLES20.GL_RENDERER));
         Log.i("onSurfaceCreated", GLES20.glGetString(GLES20.GL_SHADING_LANGUAGE_VERSION));
         Log.i("onSurfaceCreated", GLES20.glGetString(GLES20.GL_EXTENSIONS));
+/*
+   Log.i("onSurfaceCreated", GLES30.glGetString(GLES30.GL_VERSION));
+        Log.i("onSurfaceCreated", GLES30.glGetString(GLES30.GL_RENDERER));
+        Log.i("onSurfaceCreated", GLES30.glGetString(GLES30.GL_SHADING_LANGUAGE_VERSION));
+        Log.i("onSurfaceCreated", GLES30.glGetString(GLES30.GL_EXTENSIONS));
+*/
+
         initGL();
 
     }

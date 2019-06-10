@@ -30,10 +30,10 @@ private:
     int mSurfaceHeight = 0;
     glm::mat4 mProjectionMatrix ;
 
-    int cols = 10;
-    int rows = 10;
+    int cols = 1000;
+    int rows = 700;
     int Start_Generating_Frame =0;
-    const int mFrameSize = cols*rows*4;
+    const int mFrameSize = cols*rows*3;
     int i=0,j =0;
     int mRed = 0;
     int mGreen = 0;

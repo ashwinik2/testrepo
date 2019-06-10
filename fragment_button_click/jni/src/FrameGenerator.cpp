@@ -59,10 +59,14 @@ void FrameGenerator::checkClError(/*std::string clOperation,*/int err)
     }
 }
 
-void FrameGenerator::GetFrame(unsigned char* mFrameBuffer,int &cl_device_ready)
+void FrameGenerator::GetFrame(unsigned char* mFrameBuffer,int &cl_device_ready,const int FrameSize,int rows,int cols)
 {
+	mCols = cols;
+	mRows = rows;
+//	mFrameSize = mRows *mCols *4;
+	mFrameSize = FrameSize;
     __android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "FrameGenerator::GetFrame()");
-     for (i = 0; i < (cols *rows); i++)
+     for (i = 0; i < (mCols *mRows); i++)
      {
         mRed = rand() % 255;
         mGreen = rand() % 255;
@@ -75,7 +79,7 @@ void FrameGenerator::GetFrame(unsigned char* mFrameBuffer,int &cl_device_ready)
         mFrameBuffer[(i*4)+0] = mRed;
         mFrameBuffer[(i*4)+1] = mGreen;
         mFrameBuffer[(i*4)+2] = mBlue;
-        mFrameBuffer[(i*4)+3] = 255;
+    //    mFrameBuffer[(i*4)+3] = 255;
     }
     //return mFrameBuffer;
 #if 0
@@ -127,7 +131,7 @@ void FrameGenerator::GetFrame(unsigned char* mFrameBuffer,int &cl_device_ready)
         {
 		__android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "FrameGenerator::clGetDeviceIDs()");
             printf("Error: Failed to create a device group!\n");
-           // return EXIT_FAILURE;
+           
 
 	DRLOGF("clDeviceID err is %d", err);
         checkClError(/*clGetDeviceID,*/err);
@@ -294,7 +298,7 @@ void FrameGenerator::GetFrame(unsigned char* mFrameBuffer,int &cl_device_ready)
 	mSimpleOpenCV->CreateMat();
 #endif
 	mFrameOpenCL = new FrameOpenCL();
-	mFrameOpenCL -> ProcessFrame(mFrameBuffer, cl_device_ready, mFrameSize);	
+	mFrameOpenCL -> ProcessFrame(mFrameBuffer, cl_device_ready, mFrameSize,mRows,mCols);	
 	//cl_device_ready =1;
 }
 

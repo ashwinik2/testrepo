@@ -19,8 +19,10 @@ FrameOpenCL::~FrameOpenCL()
 
     __android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "~FrameOpenCL()");
 }
-void FrameOpenCL::ProcessFrame(unsigned char* mFrameBuffer,int &cl_device_ready,const int &mFrameSize)
+void FrameOpenCL::ProcessFrame(unsigned char* mFrameBuffer,int &cl_device_ready,const int &mFrameSize,int rows,int cols)
 {
+	mRows = rows;
+	mCols = cols;
     __android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "FrameOpenCL::ProcessFrame()");
 //#if 0
     const char *KernelSource = "\n" \
@@ -31,7 +33,7 @@ void FrameOpenCL::ProcessFrame(unsigned char* mFrameBuffer,int &cl_device_ready,
     "{                                                                      \n" \
     "   int i = get_global_id(0);                                           \n" \
     "   if(i < count)                                                       \n" \
-    "       output[i] = input[i] * input[i];                                \n" \
+   "       output[i] = input[i] *input[i];                                \n" \
     "}                                                                      \n" \
     "\n";
        int err;                            // error code returned from api calls
@@ -201,7 +203,7 @@ void FrameOpenCL::ProcessFrame(unsigned char* mFrameBuffer,int &cl_device_ready,
         clReleaseContext(context);
         cl_device_ready =1;
         mSimpleOpenCV = new SimpleOpenCV();
-        mSimpleOpenCV->CreateMat();
+        mSimpleOpenCV->CreateMat(mFrameBuffer,mRows,mCols,mFrameSize);
 //#endif
 
         cl_device_ready =1;

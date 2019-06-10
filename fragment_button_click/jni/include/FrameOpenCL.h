@@ -10,10 +10,12 @@ class FrameOpenCL
 public:
     FrameOpenCL ();
     ~FrameOpenCL ();
-    void ProcessFrame( unsigned char *mFrameBuffer,int &cl_device_ready,const int &mFrameSize);
+    void ProcessFrame( unsigned char *mFrameBuffer,int &cl_device_ready,const int &mFrameSize,int rows,int cols);
 
 private:
 	SimpleOpenCV*  mSimpleOpenCV = nullptr;
+	int mRows =0;
+	int mCols =0;
 
 };
 

@@ -63,7 +63,25 @@ public class MainActivity extends AppCompatActivity
         mframelayout.addView(mView);*/
 
     }
+/*
+ @Override
+    protected void onResume() {
 
+        super.onResume();
+        if(mFragmentGLSurfaceView != null) {
+            mFragmentGLSurfaceView .onResume();
+        }
+
+    }
+
+    @Override
+    protected void onPause() {
+
+        super.onPause();
+        if(mFragmentGLSurfaceView != null) {
+            mFragmentGLSurfaceView.onPause();
+        }
+    }*/
     @Override
     public void messageFromControlButton(String message)
     {

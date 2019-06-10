@@ -14,7 +14,11 @@ LOCAL_C_INCLUDES += $(LOCAL_PATH)/glm \
 			$(LOCAL_PATH)/../external/opencv3/modules/imgproc/include \
 			$(LOCAL_PATH)/../external/opencv3/modules/photo/include \
 			$(LOCAL_PATH)/../external/opencv3/modules/video/include \
-			$(LOCAL_PATH)/../external/opencv3/modules/objdetect/include
+			$(LOCAL_PATH)/../external/opencv3/modules/objdetect/include \
+			$(LOCAL_PATH)/../external/opencv3/modules/imgcodecs/include \
+			$(LOCAL_PATH)/../external/opencv3/3rdparty/libjpeg \
+			$(LOCAL_PATH)/../external/opencv3/modules/highgui/include \
+			$(LOCAL_PATH)/../external/opencv3/modules/videoio/include 
 LOCAL_CPPFLAGS += \
                 -std=c++14 \
                 -fPIC \
@@ -24,13 +28,19 @@ LOCAL_CPPFLAGS += \
                 -Wno-unused-parameter \
                 -DOGL_VERBOSE
 
+LOCAL_STATIC_LIBRARIES := \
+		opencv_libjpeg
+
 LOCAL_SHARED_LIBRARIES := \
                         liblog \
                         libGLESv2 \
                         libandroid \
                         libEGL \
                         libOpenCL \
-                        libopencv_core
+                        libopencv_core \
+			libopencv_imgproc \
+			libopencv_imgcodecs \
+			libopencv_highgui
 
 LOCAL_SRC_FILES := src/jniRenderer.cpp \
                     src/DataRenderer.cpp \

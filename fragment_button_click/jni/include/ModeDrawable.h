@@ -14,7 +14,7 @@
 class ModeDrawable
 {
 public:
-    ModeDrawable();
+    ModeDrawable(int rows, int cols,const int FrameSize);
     ~ModeDrawable();
 
     void checkGlError(std::string string);
@@ -27,9 +27,9 @@ public:
 private:
     std::string glesVersionInfo;
    int mShader=0;
-    int cols = 10;
-    int rows = 10;
-    int mFrameSize = cols*rows*4;
+    int mCols = 0;
+    int mRows = 0;
+    int mFrameSize = 0 ;
     GLuint mProgram = 0;
     GLint mMVPMatrixHandle = -1;
     GLint mTextureUniformHandle = -1;

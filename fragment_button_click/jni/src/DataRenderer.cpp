@@ -44,7 +44,7 @@ void DataRenderer::onDrawFrame()
    if(mModeDrawable != nullptr)
     {
          __android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "DataRenderer::onDrawFrame when mModeDrawable != nullptr call draw");
-         mFrameGenerator -> GetFrame(mFrameBuffer,cl_device_ready);
+         mFrameGenerator -> GetFrame(mFrameBuffer,cl_device_ready,mFrameSize,rows,cols);
 	 if(cl_device_ready == 1)
 	 {
          	mModeDrawable->update(mFrameBuffer);
@@ -82,9 +82,12 @@ void DataRenderer::onSurfaceCreated(EGLConfig config)
     glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
     glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);
-    mModeDrawable = new ModeDrawable();
+    mModeDrawable = new ModeDrawable(rows,cols,mFrameSize);
     mFrameGenerator = new FrameGenerator();
     mFrameBuffer = new unsigned char[mFrameSize];
+
+    DRLOGF("[Rows] %d", rows);
+    DRLOGF("[Columns] %d", cols);
 }
 
 
