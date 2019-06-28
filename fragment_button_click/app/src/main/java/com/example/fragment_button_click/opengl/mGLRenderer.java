@@ -20,7 +20,7 @@ import com.example.fragment_button_click.R;
 import java.util.concurrent.TimeUnit;
 
 import static android.os.SystemClock.sleep;
-
+import com.example.fragment_button_click.common.INTENT;
 public class mGLRenderer implements GLSurfaceView.Renderer {
 
 
@@ -32,7 +32,7 @@ public class mGLRenderer implements GLSurfaceView.Renderer {
     public volatile float mAngle;
     private static native void initGL();
     private static native void resizeGL(int width, int height);
-    private static native void drawGL();
+    private static native void drawGL(int filtertype);
 
     private Context mContext;
     public  mGLRenderer(Context context)
@@ -63,7 +63,26 @@ public class mGLRenderer implements GLSurfaceView.Renderer {
     public void onDrawFrame(GL10 unused)
     {
         Log.i("onDrawFrame()","In mGLRenderer Class");
-        drawGL();
+	int cvFilterType=0;
+        if(INTENT.i == 1)
+        {
+            Log.i("onDrawFrame Blur ()","In mGLRenderer Class");
+             cvFilterType = INTENT.i;
+            INTENT.i = 0;
+        }
+        if(INTENT.i ==2)
+        {
+            Log.i("onDrawFrame sharpen()","In mGLRenderer Class");
+            cvFilterType  = INTENT.i;
+            INTENT.i = 0;
+        }
+       if(INTENT.i ==3)
+        {
+            Log.i("onDrawFrame Edge Dtection()","In mGLRenderer Class");
+             cvFilterType = INTENT.i;
+            INTENT.i = 0;
+        }
+        drawGL(cvFilterType);
     }
     @Override
     public void onSurfaceChanged(GL10 unused, int width, int height)

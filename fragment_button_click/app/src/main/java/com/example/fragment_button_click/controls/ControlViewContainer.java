@@ -75,13 +75,14 @@ public class ControlViewContainer extends Fragment implements OnStartDragListene
         switch (controlmode)
         {
             case CONTROL_MODE0:
-               /* ControlViewModelList.add(new ControlViewButton(mContext));
+                ControlViewModelList.add(new ControlViewButton(mContext));
+		ControlViewModelList.add(new ControlViewFilterButton(mContext));
                 ControlViewModelList.add(new ControlViewText(String.format(Locale.US, "Text Item View", 1)));
-                ControlViewModelList.add(new ControlViewRadioButton());*/
+                ControlViewModelList.add(new ControlViewRadioButton());
+              /*  ControlViewModelList.add(new ControlViewText(String.format(Locale.US, "Text Item View", 1)));
                 ControlViewModelList.add(new ControlViewText(String.format(Locale.US, "Text Item View", 1)));
                 ControlViewModelList.add(new ControlViewText(String.format(Locale.US, "Text Item View", 1)));
-                ControlViewModelList.add(new ControlViewText(String.format(Locale.US, "Text Item View", 1)));
-                ControlViewModelList.add(new ControlViewText(String.format(Locale.US, "Text Item View", 1)));
+                ControlViewModelList.add(new ControlViewText(String.format(Locale.US, "Text Item View", 1)));*/
                 break;
 
             case CONTROL_MODE1:

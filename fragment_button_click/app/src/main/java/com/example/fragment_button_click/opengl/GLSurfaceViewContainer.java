@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.opengl.GLSurfaceView;
 
 import com.example.fragment_button_click.opengl.mGLSurfaceView;
-
+import com.example.fragment_button_click.common.INTENT;
 
 public class GLSurfaceViewContainer extends Fragment {
 
@@ -25,6 +25,21 @@ public class GLSurfaceViewContainer extends Fragment {
             Log.i("GLSurfaceView_Container","!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Stop!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             mGLSurfaceView.onPause();
         }
+    }
+    public void gotMessagefromFilter(String message) {
+            Log.i("GLSurfaceView_Container","gotmessage called!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            if(message.matches("Blur")) {
+                Log.i("GLSurfaceView_Container","!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Blur!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                INTENT.i = 1;
+
+            } else if (message.matches("Sharp")){
+                Log.i("GLSurfaceView_Container","!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Sharp!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                INTENT.i = 2;
+            }
+            else if (message.matches("EdgeDet")){
+                Log.i("GLSurfaceView_Container","!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!EdgeDet!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                INTENT.i = 3;
+            }
     }
 
     @Override

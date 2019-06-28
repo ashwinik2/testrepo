@@ -201,7 +201,7 @@ void FrameOpenCL::ProcessFrame(unsigned char* mFrameBuffer,int &cl_device_ready,
         clReleaseKernel(kernel);
         clReleaseCommandQueue(commands);
         clReleaseContext(context);
-        cl_device_ready =1;
+        //cl_device_ready =1;
         mSimpleOpenCV = new SimpleOpenCV();
         mSimpleOpenCV->CreateMat(mFrameBuffer,mRows,mCols,mFrameSize);
 //#endif

@@ -16,11 +16,13 @@ import com.example.fragment_button_click.controls.ControlViewMode;
 import com.example.fragment_button_click.drawable.CustomDrawable;
 import com.example.fragment_button_click.drawable.CustomView;
 import com.example.fragment_button_click.opengl.GLSurfaceViewContainer;
+import com.example.fragment_button_click.controls.ControlViewFilterButton;
 
 public class MainActivity extends AppCompatActivity
         implements
         ControlViewButton.controlButtonListener,
-        ControlViewMode.controlModeListener/*,
+        ControlViewMode.controlModeListener,
+	ControlViewFilterButton.controlButtonFilterListener/*,
         View.OnClickListener*/
 {
     ControlViewContainer mFragmentControlButton;
@@ -87,6 +89,13 @@ public class MainActivity extends AppCompatActivity
     {
         Log.e("main","messageFromControlButton!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         mFragmentGLSurfaceView.gotMessage(message);
+
+    }
+	@Override
+    public void messageFromControlFilterButton(String message)
+    {
+        Log.e("main","messageFromControlFilterButton!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        mFragmentGLSurfaceView.gotMessagefromFilter(message);
 
     }
     @Override

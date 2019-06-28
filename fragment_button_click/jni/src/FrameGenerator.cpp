@@ -6,6 +6,7 @@
 #include<string.h>
 #include<iostream>
 #include <sstream>
+#include<Common.h>
 using namespace std;
 std::string clOperation;
 FrameGenerator::FrameGenerator()
@@ -63,6 +64,7 @@ void FrameGenerator::GetFrame(unsigned char* mFrameBuffer,int &cl_device_ready,c
 {
 	mCols = cols;
 	mRows = rows;
+	JniLOGI("[mCVFilterType is ] %d", mCVFilterType);
 //	mFrameSize = mRows *mCols *4;
 	mFrameSize = FrameSize;
     __android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "FrameGenerator::GetFrame()");
@@ -299,6 +301,6 @@ void FrameGenerator::GetFrame(unsigned char* mFrameBuffer,int &cl_device_ready,c
 #endif
 	mFrameOpenCL = new FrameOpenCL();
 	mFrameOpenCL -> ProcessFrame(mFrameBuffer, cl_device_ready, mFrameSize,mRows,mCols);	
-	//cl_device_ready =1;
+	cl_device_ready =1;
 }
 

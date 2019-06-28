@@ -6,6 +6,7 @@
 #include<iostream>
 #include<unistd.h>
 #include <android/log.h>
+#include<Common.h>
 using namespace cv;
 SimpleOpenCV::SimpleOpenCV()
 {
@@ -22,6 +23,7 @@ void SimpleOpenCV ::CreateMat(unsigned char*mFrameBuffer,int rows, int cols,cons
 	mRows = rows;
 	mCols = cols;
 	mFrameSize = FrameSize;
+	FilterType mFilterType;
 	DRLOGF("[mFrameSize in simpleOpenCV %d", mFrameSize);
 	
 
@@ -43,22 +45,27 @@ void SimpleOpenCV ::CreateMat(unsigned char*mFrameBuffer,int rows, int cols,cons
 	Mat srcimg(mRows,mCols, CV_8UC4, mLocalBuffer);
 #endif	
 
+	//mFilterType = mCVFilterType;
+
+	if(mCVFilterType == BLUR)
+	{	
 	/*Gaussian Filter */
-//#if 0
-	Mat dstimg(srcimg.rows,srcimg.cols,CV_8UC3,Scalar(0,0,0));
-	int size = dstimg.total() * dstimg.elemSize();
-	GaussianBlur(srcimg, dstimg, Size(3, 3), 0);
-	memcpy(mFrameBuffer,dstimg.data,size* sizeof(unsigned char));
-//#endif
+		Mat dstimg(srcimg.rows,srcimg.cols,CV_8UC3,Scalar(0,0,0));
+		int size = dstimg.total() * dstimg.elemSize();
+		GaussianBlur(srcimg, dstimg, Size(3, 3), 0);
+		memcpy(mFrameBuffer,dstimg.data,size* sizeof(unsigned char));
+	}
+	if(mCVFilterType == EDGE)
+	{	
 	/*Laplacian Edge Detection */
-#if 0
-	Mat dstimg(srcimg.rows,srcimg.cols,CV_8UC3,Scalar(0,0,0));
-	int size = dstimg.total() * dstimg.elemSize();
-	float kernel[9] = {-1,-1,-1, -1,8,-1, -1,-1,-1};
-	Mat Kernel(3,3,CV_32F,kernel);
-	filter2D(srcimg, dstimg, -1, Kernel, Point(-1,-1), 0.0, BORDER_REPLICATE);
-	memcpy(mFrameBuffer,dstimg.data,size* sizeof(unsigned char));
-#endif
+
+		Mat dstimg(srcimg.rows,srcimg.cols,CV_8UC3,Scalar(0,0,0));
+		int size = dstimg.total() * dstimg.elemSize();
+		float kernel[9] = {-1,-1,-1, -1,8,-1, -1,-1,-1};
+		Mat Kernel(3,3,CV_32F,kernel);
+		filter2D(srcimg, dstimg, -1, Kernel, Point(-1,-1), 0.0, BORDER_REPLICATE);
+		memcpy(mFrameBuffer,dstimg.data,size* sizeof(unsigned char));
+	}
 	/*Homogeneous Blur */
 #if 0
 	Mat dstimg(srcimg.rows,srcimg.cols,CV_8UC3,Scalar(0,0,0));
@@ -68,15 +75,17 @@ void SimpleOpenCV ::CreateMat(unsigned char*mFrameBuffer,int rows, int cols,cons
 	filter2D(srcimg, dstimg, -1, Kernel, Point(-1,-1), 0.0, BORDER_REPLICATE);
 	memcpy(mFrameBuffer,dstimg.data,size* sizeof(unsigned char));
 #endif
+	if(mCVFilterType == SHARP)
+	{	
 	/*sharpen the image */
-#if 0
-	Mat dstimg(srcimg.rows,srcimg.cols,CV_8UC3,Scalar(0,0,0));
-	int size = dstimg.total() * dstimg.elemSize();
-	float kernel[9] = {0,-1,0,-1,5,-1,0,-1,0};
-	Mat Kernel(3,3,CV_32F,kernel);
-	filter2D(srcimg, dstimg, -1, Kernel, Point(-1,-1), 0.0, BORDER_REPLICATE);
-	memcpy(mFrameBuffer,dstimg.data,size* sizeof(unsigned char));
-#endif
+
+		Mat dstimg(srcimg.rows,srcimg.cols,CV_8UC3,Scalar(0,0,0));
+		int size = dstimg.total() * dstimg.elemSize();
+		float kernel[9] = {0,-1,0,-1,5,-1,0,-1,0};
+		Mat Kernel(3,3,CV_32F,kernel);
+		filter2D(srcimg, dstimg, -1, Kernel, Point(-1,-1), 0.0, BORDER_REPLICATE);
+		memcpy(mFrameBuffer,dstimg.data,size* sizeof(unsigned char));
+	}
 	/*Sobel Edge Detection */
 #if 0
         Mat dstimg(srcimg.rows,srcimg.cols,CV_8UC3,Scalar(0,0,0));

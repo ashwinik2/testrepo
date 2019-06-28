@@ -8,7 +8,8 @@
 #include <DataRenderer.h>
 #include <GlErrorLogger.h>
 #include <android/log.h>
-
+#include <Common.h>
+int mCVFilterType; 
 //DataRenderer1 *mDataRenderer;
 extern "C"
 JNIEXPORT void JNICALL
@@ -46,9 +47,11 @@ Java_com_example_fragment_1button_1click_opengl_mGLRenderer_resizeGL(JNIEnv* env
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_example_fragment_1button_1click_opengl_mGLRenderer_drawGL(JNIEnv* env, jclass type)
+Java_com_example_fragment_1button_1click_opengl_mGLRenderer_drawGL(JNIEnv* env, jclass type,int CVFilterType)
 {
     //LOG_PRINT("Native DrawGL");
+    mCVFilterType = CVFilterType;
+    JniLOGI("[ mCVFilterType is ] %d", mCVFilterType);
     DataRenderer::Instance()->onDrawFrame();
     __android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "drawGL");
     /*if(mDataRenderer != nullptr)

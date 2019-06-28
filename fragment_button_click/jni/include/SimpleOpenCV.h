@@ -20,6 +20,9 @@ private:
     int mCols = 0;
     int mRows = 0;
     int mFrameSize = 0;
+    enum FilterType {BLUR = 1,
+	    	    SHARP = 2,
+		    EDGE =3};
 
 };
 
