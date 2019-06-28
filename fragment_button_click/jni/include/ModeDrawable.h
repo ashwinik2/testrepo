@@ -49,6 +49,7 @@ private:
     GLuint mVertexBuffer;
     GLuint mColorBuffer;
     GLuint mTextureBuffer;
+    GLuint mdraworderBuffer;
     GLuint mVertexShaderID;
     GLuint mFragmentShaderID;
 
@@ -60,11 +61,12 @@ private:
     unsigned char mGreen = 0;
     unsigned char mBlue = 0;
     unsigned char mGrayValue = 0;
-    static const int nNumVertexCoords = 18;
-    static const int nColorCoords = 18;
-    static const int nTexCoords = 12;
+    static const int nNumVertexCoords = 12;
+    static const int nColorCoords = 12;
+    static const int nTexCoords = 8;
+    static const int ndraworderCoords = 6;
 
-    GLfloat squareCoords[nNumVertexCoords] =
+  /*  GLfloat squareCoords[nNumVertexCoords] =
     {
         -1.0f, 1.0f, 1.0f,
         -1.0f, -1.0f, 1.0f,
@@ -90,8 +92,28 @@ private:
         0.0f,1.0f,
         1.0f,1.0f,
         1.0f,0.0f,
-    };
+    };*/
+	GLfloat squareCoords[nNumVertexCoords] = {
+            -1.0f,  1.0f, 0.0f,   // top left
+            -1.0f, -1.0f, 0.0f,   // bottom left
+             1.0f, -1.0f, 0.0f,   // bottom right
+             1.0f,  1.0f, 0.0f }; // top right
 
+    GLuint drawOrder[ndraworderCoords] = { 0, 1, 2, 0, 2, 3 };
+ GLfloat colorCoords[nColorCoords] =
+    {
+        1.0f, 0.0f, 0.0f,
+        0.0f, 1.0f, 0.0f,
+        0.0f, 0.0f, 1.0f,
+        1.0f, 0.0f, 0.0f,
+    };
+    GLfloat textureCoords[nTexCoords] =
+    {
+        0.0f,1.0f,
+        0.0f,0.0f,
+        1.0f,0.0f,
+        1.0f,1.0f,
+    };
 };
 
 #endif //FRAGMENT_BUTTON_CLICK_MODEDRAWABLE_H

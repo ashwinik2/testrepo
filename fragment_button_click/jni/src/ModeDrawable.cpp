@@ -122,8 +122,12 @@ void ModeDrawable::load()
     "uniform sampler2D u_Texture;"
 
     "void main() {\n"
-        "vec3 result = texture2D(u_Texture, v_TextCoords).rgb;\n"
-        "gl_FragColor = vec4(result,1.0);\n"
+    "vec2 flipped_texcoord = vec2(v_TextCoords.x, 1.0 - v_TextCoords.y);\n"
+   "vec3 result = texture2D(u_Texture, flipped_texcoord).rgb;\n"
+     
+
+    // "gl_FragColor = vec4(v_Color,1.0);"   
+    "gl_FragColor = vec4(result,1.0);\n"
     "}\n";
 
 
@@ -139,8 +143,11 @@ void ModeDrawable::load()
     glGenBuffers(1,&mTextureBuffer);
         __android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "ModeDrawable::load() mColorBuffer glGenBuffers");
         checkGlError("glGenBuffers");
+    glGenBuffers(1,&mdraworderBuffer);
+        __android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "ModeDrawable::load() mdraworderBuffer glGenBuffers");
+        checkGlError("glGenBuffers");
 
-    mVertexShaderID = glCreateShader(GL_VERTEX_SHADER);
+    	mVertexShaderID = glCreateShader(GL_VERTEX_SHADER);
     mFragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
     glClearColor(0.5f, 0.8f, 0.8f, 0.0f);
     const char *adapter[1];
@@ -266,6 +273,12 @@ void ModeDrawable::draw(const glm::mat4& projMat)
     __android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "ModeDrawable::draw() tex glVertexAttribPointer");
     checkGlError("glVertexAttribPointer");
 
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,mdraworderBuffer);
+    __android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "ModeDrawable::draw() draworderbuffer glBindBuffer");
+    checkGlError("glBindBuffer");
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(drawOrder),drawOrder,GL_STATIC_DRAW);
+    __android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "ModeDrawable::draw()  draworderBuffer glBufferData");
+    checkGlError("glBufferData");
 
    mViewMatrix = glm::lookAt(vec3(0, 0, 1), vec3(0, 0, 0), vec3(0, 1.0, 0.0));
     glm::mat4 trans= glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, 0.0));
@@ -284,12 +297,18 @@ void ModeDrawable::draw(const glm::mat4& projMat)
     glUniform1i(mTextureUniformHandle,0);
     checkGlError("glUniformli");
 
-    glDrawArrays(GL_TRIANGLES, 0, mNumberofVertices);
+   /* glDrawArrays(GL_TRIANGLES, 0, mNumberofVertices);
     checkGlError("glDrawArrays");
-     __android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "ModeDrawable::draw() glDrawArrays");
+     __android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "ModeDrawable::draw() glDrawArrays");*/
+    glDrawElements(GL_TRIANGLES, 6,GL_UNSIGNED_INT,0) ;
+    checkGlError("glDrawElementArrays");
+     __android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "ModeDrawable::draw() glDrawElementArrays");
+
     glDisableVertexAttribArray(mVertexPosHandle);
     glDisableVertexAttribArray(mColorValHandle);
+    glDisableVertexAttribArray(mTexturePosHandle);
 
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glUseProgram(0);
     __android_log_print(ANDROID_LOG_INFO,  __FUNCTION__, "ModeDrawable::draw() glUseprogram(0)");

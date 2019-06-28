@@ -44,12 +44,12 @@ void SimpleOpenCV ::CreateMat(unsigned char*mFrameBuffer,int rows, int cols,cons
 #endif	
 
 	/*Gaussian Filter */
-#if 0
+//#if 0
+	Mat dstimg(srcimg.rows,srcimg.cols,CV_8UC3,Scalar(0,0,0));
 	int size = dstimg.total() * dstimg.elemSize();
-	Mat dstimage(srcimg.rows,srcimg.cols,CV_8UC3,Scalar(0,0,0));
-	GaussianBlur(srcimg, dstimage, Size(3, 3), 0);
-	memcpy(mFrameBuffer,dstimage.data,size* sizeof(unsigned char));
-#endif
+	GaussianBlur(srcimg, dstimg, Size(3, 3), 0);
+	memcpy(mFrameBuffer,dstimg.data,size* sizeof(unsigned char));
+//#endif
 	/*Laplacian Edge Detection */
 #if 0
 	Mat dstimg(srcimg.rows,srcimg.cols,CV_8UC3,Scalar(0,0,0));
@@ -78,14 +78,14 @@ void SimpleOpenCV ::CreateMat(unsigned char*mFrameBuffer,int rows, int cols,cons
 	memcpy(mFrameBuffer,dstimg.data,size* sizeof(unsigned char));
 #endif
 	/*Sobel Edge Detection */
-//#if 0
+#if 0
         Mat dstimg(srcimg.rows,srcimg.cols,CV_8UC3,Scalar(0,0,0));
         int size = dstimg.total() * dstimg.elemSize();
-        float kernel[9] = {-1,-2,0, 0,0,-1, -1,-2,-1};
+        float kernel[9] = {1,2,1, 0,0,0, -1,-2,-1};
         Mat Kernel(3,3,CV_32F,kernel);
         filter2D(srcimg, dstimg, -1, Kernel, Point(-1,-1), 0.0, BORDER_REPLICATE);
         memcpy(mFrameBuffer,dstimg.data,size* sizeof(unsigned char));
-//#endif
+#endif
 
 //delete[]mLocalBuffer;
 }
