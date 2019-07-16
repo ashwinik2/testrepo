@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.view.MotionEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,7 +16,8 @@ public class ControlViewAdapter extends RecyclerView.Adapter  implements ItemTou
     private Context mContext;
     private OnStartDragListener mDragStartListener;
     ControlViewHolder mViewHolder = null;
-
+	private int mFromPosition = 0;
+    private int mToPosition = 0;
     public ControlViewAdapter(final List<ControlViewModel> viewModels,OnStartDragListener dragStartListener)
     {
         if (viewModels != null)
@@ -36,33 +37,33 @@ public class ControlViewAdapter extends RecyclerView.Adapter  implements ItemTou
 
         Log.i("onCreateViewHolder()","ControlViewAdapter");
         mView = ((ControlViewModel) models.get(viewType)).createView(mContext);;
-        mViewHolder= new ControlViewHolder(mView,mContext,mDragStartListener);
+        mViewHolder= new ControlViewHolder(mView,mContext);
 
         return mViewHolder;
     }
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position)
     {
-
-        Log.i("onBindViewHolder()","ControlViewAdapter");
-        ((ControlViewHolder)holder).bindData(models.get(position),getItemViewType(position));
-        /*holder.msetOnTouchListener(new View.OnTouchListener()
-        {
+	Log.i("onBindViewHolder()","ControlViewAdapter");
+        System.out.println("Position in onBindViewHolder is   = " + position);
+        ((ControlViewHolder)holder).bindData(models.get(position));
+        holder.itemView.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    mDragStartListener.onStartDrag((RecyclerView.ViewHolder)itemView);
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.i("onBindViewHolder1()","ControlViewAdapter");
+                if (event.getAction() ==
+                        MotionEvent.ACTION_DOWN) {
+                    mDragStartListener.onStartDrag(holder);
                 }
                 return false;
             }
-        });*/
+        });
     }
 
     @Override
     public int getItemViewType(int position)
     {
-        return position;
+	return models.get(position).getListItemType();
     }
 
     @Override
@@ -72,25 +73,23 @@ public class ControlViewAdapter extends RecyclerView.Adapter  implements ItemTou
         return models.size();
     }
 
-    public int getItem(final int id)
+	@Override
+    public long getItemId(final int position)
     {
         Log.i("getItem()","ControlViewAdapter");
-        return models.indexOf(id);
-    }
+        return position;
+    }	
 
    @Override
-    public boolean onItemMove(int fromPosition, int toPosition) {
-       Log.i("onItemMove","ControlViewAdapter");
-        if (fromPosition < toPosition) {
-            for (int i = fromPosition; i < toPosition; i++) {
-                Collections.swap(models, i, i + 1);
-            }
-        } else {
-            for (int i = fromPosition; i > toPosition; i--) {
-                Collections.swap(models, i, i - 1);
-            }
-        }
-       //Collections.swap(models, fromPosition, toPosition);
+    public boolean onItemMove(int fromPosition, int toPosition)
+    {
+	Log.i("onItemMove","ControlViewAdapter");
+       mFromPosition = fromPosition;
+       mToPosition = toPosition;
+       System.out.println("mFromPosition is    = " + mFromPosition);
+       System.out.println("mToPosition is    = " + mToPosition);
+
+       Collections.swap(models, fromPosition, toPosition);
        notifyItemMoved(fromPosition, toPosition);
        return true;
     }

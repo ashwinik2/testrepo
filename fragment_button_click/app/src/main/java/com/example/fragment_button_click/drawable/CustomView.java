@@ -48,6 +48,8 @@ public class CustomView extends View {
         init(attrs);
     }
 
+    int mWidth=0;
+    int mHeight =0;
 
     private void init(AttributeSet attrs) {
         Log.i("initPaint()", " In customView");
@@ -64,6 +66,8 @@ public class CustomView extends View {
         cPaint.setTextAlign(Paint.Align.CENTER);
 
         mBitmap = Bitmap.createBitmap(cols, rows, Bitmap.Config.ARGB_8888);
+        mWidth = mBitmap.getWidth();
+        mHeight = mBitmap.getHeight();
         createBitmapData();
 
     }
@@ -71,22 +75,28 @@ public class CustomView extends View {
     private static final int cols = 200;
     private static final int rows = 200;
     public byte[] mtextureBytes = new byte[cols * rows * 4];
-    private float mPreviousX = 0;
-    private float mPreviousY = 0;
-    private float mPreviousX1 = 0;
-    private float mPreviousY1 = 0;
+    private float mCurrentPosX = 0;
+    private float mCurrentPosY = 0;
+    private float mPreviousPosX = 0;
+    private float mPreviousPosY = 0;
 
-    private float mPreviousX2 = 0;
-    private float mPreviousY2 = 0;
-    private float mPreviousX3 = 0;
-    private float mPreviousY3= 0;
+    private float mOriginalPosX = 0;
+    private float mOriginalPosY = 0;
+    private float mCurrentPosX3 = 0;
+    private float mCurrentPosY3= 0;
+    private float mCurrentPosX4 = 0;
+    private float mCurrentPosY4= 0;
+    private float mCurrentPosX5 = 0;
+    private float mCurrentPosY5= 0;
     float drawingPicOffset_x = 0, drawingPicOffset_y = 0;
-    float mCircleX,mCircleY,mCircleRadius = 30f;
+    float mCircleX,mCircleY,mCircleRadius = 40f;
     Boolean mCircleTouched = false;
-    Boolean mTriggerBitmap = false;
-    Boolean mTriggerBitmapstop = false;
-    Boolean mTriggerBitmapstop1 = false;
+    Boolean mTriggerDrag = false;
+    Boolean mTriggerZoom = false;
+    Boolean mMouseClickedOutside = false;
+    Boolean mMouseClickedOutside1 = false;
     Boolean Zoom = false;
+    Boolean Drag = false;
     Bitmap mBitmapScaled;
     int mScaledWidth,mScaledHeight;
 
@@ -179,9 +189,6 @@ public class CustomView extends View {
         final float scale = Math.min((float) width / (float) bitmapWidth,
                 (float) height / (float) bitmapHeight);
 
-        /*mScaledWidth = (int) (bitmapWidth * scale);
-        mScaledHeight = (int) (bitmapHeight * scale);*/
-
         mScaledWidth = width;
         mScaledHeight = height;
         if(width !=0 && height !=0) {
@@ -193,62 +200,37 @@ public class CustomView extends View {
     public void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
         Log.i("draw()", " In customView");
-        // mPaint.setColor(Color.parseColor("#4D000000"));
         mPaint.setColor(Color.WHITE);
 
-        if (mPreviousX == 0f || mPreviousY == 0f) {
-            mPreviousX  =  canvas.getWidth()/2 -  mBitmap.getWidth()/2 ;
-            mPreviousY  =  canvas.getHeight()/2  - mBitmap.getHeight()/2 ;
+        if (mCurrentPosX == 0f || mCurrentPosY == 0f) {
+            mCurrentPosX  =  canvas.getWidth()/2 -  mBitmap.getWidth()/2 ;
+            mCurrentPosY  =  canvas.getHeight()/2  - mBitmap.getHeight()/2 ;
 
-            mPreviousX2 = mPreviousX ;
-            mPreviousY2 = mPreviousY ;
-            mPreviousX1 = mPreviousX;
-          mPreviousY1 = mPreviousY;
+            mOriginalPosX = mCurrentPosX ;
+            mOriginalPosY = mCurrentPosY ;
+            mPreviousPosX = mCurrentPosX;
+            mPreviousPosY = mCurrentPosY;
+            mCurrentPosX3 = mCurrentPosX;
+            mCurrentPosY3 = mCurrentPosY;
+            mCurrentPosX4 = mCurrentPosX;
+            mCurrentPosY4 = mCurrentPosY;
         }
 
-     /*   if(mCircleTouched == true)
+    
+
+        if((mCircleTouched == true && mTriggerDrag == true) )
         {
-            mBitmapScaled = scaleBitmap(mBitmap,400,400);
-            canvas.drawBitmap(mBitmapScaled, mPreviousX, mPreviousY, null);
-            mPaint.setColor(Color.WHITE);
-            canvas.drawLine(mPreviousX, mPreviousY , mPreviousX+mBitmapScaled.getWidth(), mPreviousY, mPaint);
-            canvas.drawLine(mPreviousX, mPreviousY , mPreviousX, mPreviousY+mBitmapScaled.getHeight(), mPaint);
-            canvas.drawLine(mPreviousX+mBitmapScaled.getWidth(), mPreviousY ,mPreviousX+mBitmapScaled.getWidth(), mPreviousY+mBitmapScaled.getHeight(), mPaint);
-            canvas.drawLine(mPreviousX, mPreviousY+mBitmapScaled.getHeight(), mPreviousX+mBitmapScaled.getWidth(), mPreviousY+mBitmapScaled.getHeight(), mPaint);
-            mPaint.setTextSize(30);
-            mPaint.setColor(Color.WHITE);
-            mPaint.setFakeBoldText(true);
-            mCircleX = (mPreviousX+mBitmapScaled.getWidth());
-            mCircleY = (mPreviousY+mBitmapScaled.getHeight());
-            canvas.drawCircle(mCircleX,mCircleY,mCircleRadius,mPaint);
-            canvas.drawText("D", mPreviousX+mBitmapScaled.getWidth(),mPreviousY+mBitmapScaled.getHeight(), cPaint);
-        }
-        else {
-            canvas.drawBitmap(mBitmap, mPreviousX, mPreviousY, null);
-            mPaint.setColor(Color.WHITE);
-            canvas.drawLine(mPreviousX, mPreviousY, mPreviousX + mBitmap.getWidth(), mPreviousY, mPaint);
-            canvas.drawLine(mPreviousX, mPreviousY, mPreviousX, mPreviousY + mBitmap.getHeight(), mPaint);
-            canvas.drawLine(mPreviousX + mBitmap.getWidth(), mPreviousY, mPreviousX + mBitmap.getWidth(), mPreviousY + mBitmap.getHeight(), mPaint);
-            canvas.drawLine(mPreviousX, mPreviousY + mBitmap.getHeight(), mPreviousX + mBitmap.getWidth(), mPreviousY + mBitmap.getHeight(), mPaint);
-            mPaint.setTextSize(30);
-            mPaint.setColor(Color.WHITE);
-            mPaint.setFakeBoldText(true);
-            mCircleX = (mPreviousX + mBitmap.getWidth());
-            mCircleY = (mPreviousY + mBitmap.getHeight());
-            canvas.drawCircle(mCircleX, mCircleY, mCircleRadius, mPaint);
-            canvas.drawText("D", mPreviousX+mBitmap.getWidth(),mPreviousY+mBitmap.getHeight(), cPaint);
-        }*/
+            int width =(int)Math.round(mCurrentPosX-mPreviousPosX);
+            int height = (int)Math.round(mCurrentPosY-mPreviousPosY);
+            mWidth = width;
+            mHeight = height;
 
-        if(mCircleTouched == true && mTriggerBitmap == true)
-        {
-            int width =(int)Math.round(mPreviousX-mPreviousX1);
-            int height = (int)Math.round(mPreviousY-mPreviousY1);
+            Log.e("mCircleTouched == true", "In onDraw() in Customview() class");
+            System.out.println("mCurrentPosX= " +mCurrentPosX);
+            System.out.println("mCurrentPosY= " +mCurrentPosY);
 
-            System.out.println("mPreviousX= " +mPreviousX);
-            System.out.println("mPreviousY= " +mPreviousY);
-
-            System.out.println("mPreviousX1= " +mPreviousX1);
-            System.out.println("mPreviousY1= " +mPreviousY1);
+            System.out.println("mPreviousPosX= " +mPreviousPosX);
+            System.out.println("mPreviousPosY= " +mPreviousPosY);
 
             System.out.println("bitmap width inside circletouched= " +width);
             System.out.println("bitmap height inside circletouched= " +height);
@@ -256,127 +238,172 @@ public class CustomView extends View {
 
             mPaint.setColor(Color.WHITE);
             mPaint.setColor(Color.parseColor("#4D000000"));
-            canvas.drawRect(mPreviousX1, mPreviousY1, mPreviousX , mPreviousY, mPaint);
-            mPaint.setColor(Color.parseColor("#4D000000"));
-            canvas.drawBitmap(mBitmapScaled, mPreviousX1, mPreviousY1, mPaint);
-            mPaint.setTextSize(30);
-            mPaint.setColor(Color.WHITE);
-            mPaint.setFakeBoldText(true);
-           /* mCircleX = (mPreviousX+mBitmapScaled.getWidth());
-            mCircleY = (mPreviousY+mBitmapScaled.getHeight());*/
+            if((width!=0 ) && (height != 0)) {
+                canvas.drawRect(mPreviousPosX, mPreviousPosY, mCurrentPosX, mCurrentPosY, mPaint);
 
-            mCircleX = (mPreviousX);
-            mCircleY = (mPreviousY);
-            canvas.drawCircle(mCircleX,mCircleY,mCircleRadius,mPaint);
-            canvas.drawText("D", mPreviousX,mPreviousY, cPaint);
-            mPreviousX3 = mPreviousX;
-            mPreviousY3 = mPreviousY;
-            //canvas.drawText("D", mPreviousX+mBitmapScaled.getWidth(),mPreviousY+mBitmapScaled.getHeight(), cPaint);
+                mPaint.setColor(Color.parseColor("#4D000000"));
+                canvas.drawBitmap(mBitmapScaled, mPreviousPosX, mPreviousPosY, mPaint);
+                mPaint.setTextSize(30);
+                mPaint.setColor(Color.WHITE);
+                mPaint.setFakeBoldText(true);
+                mCircleX = (mCurrentPosX);
+                mCircleY = (mCurrentPosY);
+                canvas.drawCircle(mCircleX, mCircleY, mCircleRadius, mPaint);
+                canvas.drawText("D", mCurrentPosX, mCurrentPosY, cPaint);
+            }
+            mCurrentPosX4 = mCurrentPosX;
+            mCurrentPosY4 = mCurrentPosY;
+            mCurrentPosX3 = mPreviousPosX;
+            mCurrentPosY3 = mPreviousPosY;
         }
-        else if(mTriggerBitmapstop)
+        // moouse move on bitmap
+        else if(mTriggerDrag)
         {
-          Log.e("Inside mTriggerbitmap", "In Customview() class");
-            //mPaint.setColor(Color.WHITE);
-            mPaint.setColor(Color.parseColor("#4D000000"));
-           canvas.drawRect(mPreviousX, mPreviousY, mPreviousX + mBitmap.getWidth(), mPreviousY + mBitmap.getWidth(), mPaint);
-            mPaint.setColor(Color.parseColor("#4D000000"));
-            canvas.drawBitmap(mBitmap, mPreviousX, mPreviousY, mPaint);
-            mPaint.setTextSize(30);
-            mPaint.setColor(Color.WHITE);
-            mPaint.setFakeBoldText(true);
-            mCircleX = (mPreviousX + mBitmap.getWidth());
-            mCircleY = (mPreviousY + mBitmap.getHeight());
-            canvas.drawCircle(mCircleX, mCircleY, mCircleRadius, mPaint);
-            canvas.drawText("D", mPreviousX + mBitmap.getWidth(), mPreviousY + mBitmap.getHeight(), cPaint);
-            mPreviousX3 = mPreviousX;
-            mPreviousY3 = mPreviousY;
-       //     mTriggerBitmapstop = false;
-       /*     Log.e("else", "In Customview() class");
-            mPaint.setColor(Color.parseColor("#4D000000"));
-            canvas.drawRect(mPreviousX2, mPreviousY2, mPreviousX2 + mBitmap.getWidth(), mPreviousY2 + mBitmap.getWidth(), mPaint);
-            mPaint.setColor(Color.parseColor("#4D000000"));
-            canvas.drawBitmap(mBitmap, mPreviousX2, mPreviousY2, mPaint);
-            mPaint.setTextSize(30);
-            mPaint.setColor(Color.WHITE);
-            mPaint.setFakeBoldText(true);
-            mCircleX = (mPreviousX2 + mBitmap.getWidth());
-            mCircleY = (mPreviousY2 + mBitmap.getHeight());
-            canvas.drawCircle(mCircleX, mCircleY, mCircleRadius, mPaint);
-            canvas.drawText("D", mPreviousX2 + mBitmap.getWidth(), mPreviousY2 + mBitmap.getHeight(), cPaint);*/
-
-
+            if (Zoom == true)
+            {
+                Log.e("Inside mTriggerDrag", "In Customview() class");
+                mPaint.setColor(Color.parseColor("#4D000000"));
+                System.out.println("mWidth= " + mWidth);
+                System.out.println("mHeight= " + mHeight);
+                canvas.drawRect(mCurrentPosX, mCurrentPosY, mCurrentPosX + mWidth, mCurrentPosY + mHeight, mPaint);
+                mPaint.setColor(Color.parseColor("#4D000000"));
+                canvas.drawBitmap(mBitmapScaled, mCurrentPosX, mCurrentPosY, mPaint);
+                mPaint.setTextSize(30);
+                mPaint.setColor(Color.WHITE);
+                mPaint.setFakeBoldText(true);
+                mCircleX = (mCurrentPosX + mWidth);
+                mCircleY = (mCurrentPosY + mHeight);
+                canvas.drawCircle(mCircleX, mCircleY, mCircleRadius, mPaint);
+                canvas.drawText("D", mCurrentPosX + mWidth, mCurrentPosY + mHeight, cPaint);
+                mCurrentPosX3 = mCurrentPosX;
+                mCurrentPosY3 = mCurrentPosY;
+            }
+            else
+                {
+                Log.e("Zoom true in last else2", "In Customview() class");
+                System.out.println("mPreviousPosX last else= " + mCurrentPosX);
+                System.out.println("mPreviousPosY last else= " + mCurrentPosY);
+                mPaint.setColor(Color.parseColor("#4D000000"));
+                canvas.drawRect(mCurrentPosX, mCurrentPosY, mCurrentPosX + mBitmap.getWidth(), mCurrentPosY + mBitmap.getWidth(), mPaint);
+                mPaint.setColor(Color.parseColor("#4D000000"));
+                canvas.drawBitmap(mBitmap, mCurrentPosX, mCurrentPosY, mPaint);
+                mPaint.setTextSize(30);
+                mPaint.setColor(Color.WHITE);
+                mPaint.setFakeBoldText(true);
+                mCircleX = (mCurrentPosX + mBitmap.getWidth());
+                mCircleY = (mCurrentPosY + mBitmap.getHeight());
+                canvas.drawCircle(mCircleX, mCircleY, mCircleRadius, mPaint);
+                canvas.drawText("D", mCurrentPosX + mBitmap.getWidth(), mCurrentPosY + mBitmap.getHeight(), cPaint);
+                mCurrentPosX3 = mCurrentPosX;
+                mCurrentPosY3 = mCurrentPosY;
+                mCurrentPosX4 = mCurrentPosX + mBitmap.getWidth();
+                mCurrentPosY4 = mCurrentPosY + mBitmap.getWidth();
+            }
 
         }
-
-        else if( mTriggerBitmapstop1)
+            // mouse down, move and up when zoom and circle touched
+        else if (mTriggerZoom)
         {
-            Log.e("Inside mTriggerbitmap1", "In Customview() class");
+                Log.e("down,move,up", "In Customview() class");
+                Log.e("Inside mTriggerDrag1", "In Customview() class");
 
-            int width =(int)Math.round(mPreviousX-mPreviousX1);
-            int height = (int)Math.round(mPreviousY-mPreviousY1);
+                int width = (int) Math.round(mCurrentPosX - mPreviousPosX);
+                int height = (int) Math.round(mCurrentPosY - mPreviousPosY);
+                mWidth = width;
+                mHeight = height;
 
-            System.out.println("mPreviousX= " +mPreviousX);
-            System.out.println("mPreviousY= " +mPreviousY);
+                System.out.println("mCurrentPosX= " + mCurrentPosX);
+                System.out.println("mCurrentPosY= " + mCurrentPosY);
 
-            System.out.println("mPreviousX1= " +mPreviousX1);
-            System.out.println("mPreviousY1= " +mPreviousY1);
+                System.out.println("mPreviousPosX= " + mPreviousPosX);
+                System.out.println("mPreviousPosY= " + mPreviousPosY);
 
-            System.out.println("bitmap width inside circletouched= " +width);
-            System.out.println("bitmap height inside circletouched= " +height);
-            mBitmapScaled = scaleBitmap(mBitmap,width,height);
+                System.out.println("bitmap width inside circletouched= " + width);
+                System.out.println("bitmap height inside circletouched= " + height);
+                mBitmapScaled = scaleBitmap(mBitmap, width, height);
 
-            mPaint.setColor(Color.WHITE);
-            mPaint.setColor(Color.parseColor("#4D000000"));
-            canvas.drawRect(mPreviousX1, mPreviousY1, mPreviousX , mPreviousY, mPaint);
-            mPaint.setColor(Color.parseColor("#4D000000"));
-            canvas.drawBitmap(mBitmapScaled, mPreviousX1, mPreviousY1, mPaint);
-            mPaint.setTextSize(30);
-            mPaint.setColor(Color.WHITE);
-            mPaint.setFakeBoldText(true);
+                mPaint.setColor(Color.WHITE);
+                mPaint.setColor(Color.parseColor("#4D000000"));
+                if ((width != 0) && (height != 0)) {
+                    canvas.drawRect(mPreviousPosX, mPreviousPosY, mCurrentPosX, mCurrentPosY, mPaint);
+                    mPaint.setColor(Color.parseColor("#4D000000"));
+                    canvas.drawBitmap(mBitmapScaled, mPreviousPosX, mPreviousPosY, mPaint);
+                    mPaint.setTextSize(30);
+                    mPaint.setColor(Color.WHITE);
+                    mPaint.setFakeBoldText(true);
 
-            mCircleX = (mPreviousX);
-            mCircleY = (mPreviousY);
-            canvas.drawCircle(mCircleX,mCircleY,mCircleRadius,mPaint);
-            canvas.drawText("D", mPreviousX,mPreviousY, cPaint);
+                    mCircleX = (mCurrentPosX);
+                    mCircleY = (mCurrentPosY);
+                    canvas.drawCircle(mCircleX, mCircleY, mCircleRadius, mPaint);
+                    canvas.drawText("D", mCurrentPosX, mCurrentPosY, cPaint);
+                }
 
-        }
-        else if(Zoom && !drawingTouch)
+                mCurrentPosX3 = mPreviousPosX;
+                mCurrentPosY3 = mPreviousPosY;
+                mCurrentPosX4 = mCurrentPosX;
+                mCurrentPosY4 = mCurrentPosY;
+                //  mTriggerZoom = false;
+            }
+        // mouse down and up when zoom
+        else if (Zoom && !drawingTouch)
         {
-            System.out.println("mPreviousX2 last else= " +mPreviousX2);
-            System.out.println("mPreviousY2 last else= " +mPreviousY2);
-            mPaint.setColor(Color.parseColor("#4D000000"));
-            canvas.drawRect(mPreviousX2, mPreviousY2, mPreviousX2 + mBitmap.getWidth(), mPreviousY2 + mBitmap.getWidth(), mPaint);
-            mPaint.setColor(Color.parseColor("#4D000000"));
-            canvas.drawBitmap(mBitmap, mPreviousX2, mPreviousY2, mPaint);
-            mPaint.setTextSize(30);
+            Log.e("Zoom true in last else1", "In Customview() class");
+            System.out.println("Zoom true in last else= " + mCurrentPosX);
+            int width = (int) Math.round(mCurrentPosX4 - mCurrentPosX3);
+            int height = (int) Math.round(mCurrentPosY4 - mCurrentPosY3);
+            mWidth = width;
+            mHeight = height;
+
+            System.out.println("mCurrentPosX3= " + mCurrentPosX3);
+            System.out.println("mCurrentPosY3= " + mCurrentPosY3);
+
+            System.out.println("mPreviousPosX4= " + mCurrentPosX4);
+            System.out.println("mPreviousPosY4= " + mCurrentPosY4);
+
+            System.out.println("bitmap width inside circletouched= " + width);
+            System.out.println("bitmap height inside circletouched= " + height);
+            mBitmapScaled = scaleBitmap(mBitmap, width, height);
+
             mPaint.setColor(Color.WHITE);
-            mPaint.setFakeBoldText(true);
-            mCircleX = (mPreviousX2 + mBitmap.getWidth());
-            mCircleY = (mPreviousY2 + mBitmap.getHeight());
-            canvas.drawCircle(mCircleX, mCircleY, mCircleRadius, mPaint);
-            canvas.drawText("D", mPreviousX2 + mBitmap.getWidth(), mPreviousY2 + mBitmap.getHeight(), cPaint);
-            mPreviousX = mPreviousX2;
-            mPreviousY = mPreviousY2;
-            Zoom = false;
-        }
-        else {
-            System.out.println("mPreviousX1 last else= " +mPreviousX1);
-            System.out.println("mPreviousY1 last else= " +mPreviousY1);
             mPaint.setColor(Color.parseColor("#4D000000"));
-            canvas.drawRect(mPreviousX1, mPreviousY1, mPreviousX1 + mBitmap.getWidth(), mPreviousY1 + mBitmap.getWidth(), mPaint);
-            mPaint.setColor(Color.parseColor("#4D000000"));
-            canvas.drawBitmap(mBitmap, mPreviousX1, mPreviousY1, mPaint);
-            mPaint.setTextSize(30);
-            mPaint.setColor(Color.WHITE);
-            mPaint.setFakeBoldText(true);
-            mCircleX = (mPreviousX1 + mBitmap.getWidth());
-            mCircleY = (mPreviousY1 + mBitmap.getHeight());
-            canvas.drawCircle(mCircleX, mCircleY, mCircleRadius, mPaint);
-            canvas.drawText("D", mPreviousX1 + mBitmap.getWidth(), mPreviousY1 + mBitmap.getHeight(), cPaint);
+            if ((width != 0) && (height != 0)) {
+                canvas.drawRect(mCurrentPosX3, mCurrentPosX3, mCurrentPosX4, mCurrentPosY4, mPaint);
+                mPaint.setColor(Color.parseColor("#4D000000"));
+                canvas.drawBitmap(mBitmapScaled, mCurrentPosX3, mCurrentPosX3, mPaint);
+                mPaint.setTextSize(30);
+                mPaint.setColor(Color.WHITE);
+                mPaint.setFakeBoldText(true);
+
+                mCircleX = (mCurrentPosX4);
+                mCircleY = (mCurrentPosY4);
+                canvas.drawCircle(mCircleX, mCircleY, mCircleRadius, mPaint);
+                canvas.drawText("D", mCurrentPosX4, mCurrentPosY4, cPaint);
+            }
         }
+        else
+            {
+
+                Log.e("last else2", "In Customview() class");
+                System.out.println("mPreviousPosX last else= " + mCurrentPosX);
+                System.out.println("mPreviousPosY last else= " + mCurrentPosY);
+                mPaint.setColor(Color.parseColor("#4D000000"));
+                canvas.drawRect(mCurrentPosX, mCurrentPosY, mCurrentPosX + mBitmap.getWidth(), mCurrentPosY + mBitmap.getWidth(), mPaint);
+                mPaint.setColor(Color.parseColor("#4D000000"));
+                canvas.drawBitmap(mBitmap, mCurrentPosX, mCurrentPosY, mPaint);
+                mPaint.setTextSize(30);
+                mPaint.setColor(Color.WHITE);
+                mPaint.setFakeBoldText(true);
+                mCircleX = (mCurrentPosX + mBitmap.getWidth());
+                mCircleY = (mCurrentPosY + mBitmap.getHeight());
+                canvas.drawCircle(mCircleX, mCircleY, mCircleRadius, mPaint);
+                canvas.drawText("D", mCurrentPosX + mBitmap.getWidth(), mCurrentPosY + mBitmap.getHeight(), cPaint);
+                mPreviousPosX = mOriginalPosX;
+                mPreviousPosY = mOriginalPosY;
+            }
+
+       }
 
 
-    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -384,117 +411,120 @@ public class CustomView extends View {
         boolean value = super.onTouchEvent(event);
         float x,dx=0 ;
         float y,dy =0;
-        double dx1,dy1;
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 x = event.getX();
                 y = event.getY();
+                Log.i("Inside ACTIONDOWN", "In Customview() class");
                 System.out.println("ACTIONDOWN x = " +x);
                 System.out.println("ACTIONDOWN y = " +y);
-                touching = true;
-                Log.i("Inside ACTIONDOWN", "In Customview() class");
+                System.out.println("ACTIONDOWN mCircleX = " +mCircleX);
+                System.out.println("ACTIONDOWN mCircleY = " +mCircleY);
+
                 dx = (x-mCircleX);
                 dy = (y-mCircleY);
-                if(Math.abs(dx+dy) < mCircleRadius)
+                System.out.println("ACTIONDOWN dx = " +dx);
+                System.out.println("ACTIONDOWN dy = " +dy);
+              //  if(Math.abs(dx+dy) < mCircleRadius)
+                if(Math.sqrt(dx * dx + dy * dy) < mCircleRadius)
                 {
                     Log.i("Inside Circle Touched" +
                             "", "In Customview() class");
                     mCircleTouched = true;
-                    if(Zoom)
-                    {
-                        drawingTouch = false;
-                        mTriggerBitmap = false;
-                        drawingTouch = false;
-                        mTriggerBitmapstop = false;
-                        mTriggerBitmapstop1 = false;
-                     //   Zoom = false;
-                        mCircleTouched = false;
-
+                    if(Zoom == true){
+                        mTriggerZoom = true;
+                        mCurrentPosX = x;
+                        mCurrentPosY = y;
                     }
 
+                    mPreviousPosX = mCurrentPosX3;
+                    mPreviousPosY = mCurrentPosY3;
+                    System.out.println("mCurrentPosX3 in action up circle touched= " + mCurrentPosX3);
+                    System.out.println("mCurrentPosY3 in action up circle touched = " + mCurrentPosY3);
                 }
-                if ((x > mPreviousX && y > mPreviousY) && (x > dx && y>dy)) {
-                    drawingPicOffset_x = (int) x - mPreviousX1;
-                    drawingPicOffset_y = (int) y - mPreviousY1;
+
+                else if ((x > mCurrentPosX3 && y > mCurrentPosY3) && (x < mCurrentPosX3 + mWidth && y < mCurrentPosX3 +mHeight))
+                {
+                    Log.e("Inside ACTIONDOWN777711", "In Customview() class");
+                    System.out.println("x in action up circle touched= " + x);
+                    System.out.println("y action up circle touched = " + y);
+                    System.out.println("mCurrentPosX3 in action up circle touched= " + mCurrentPosX3);
+                    System.out.println("mCurrentPosY3in action up circle touched = " + mCurrentPosY3);
+                    drawingPicOffset_x = (int) x - mPreviousPosX;
+                    drawingPicOffset_y = (int) y - mPreviousPosY;
                     drawingTouch = true;
+                    //mCircleTouched = false; //added
                 }
 
-                if ((x > mPreviousX && y > mPreviousY)) {
-                    drawingPicOffset_x = (int) x - mPreviousX;
-                    drawingPicOffset_y = (int) y - mPreviousY;
+
+              /*  if ((x < mCurrentPosX && y < mCurrentPosY)) {
+                     drawingPicOffset_x = (int) x - mCurrentPosX;
+                     drawingPicOffset_y = (int) y - mCurrentPosY;
                     drawingTouch = true;
-                }
-
-                if ((x < mPreviousX && y < mPreviousY)) {
-                    drawingPicOffset_x = (int) x - mPreviousX;
-                    drawingPicOffset_y = (int) y - mPreviousY;
-                    drawingTouch = true;
-                }
-
-
-                if ((x < mPreviousX1 && y < mPreviousY1)) {
-                    drawingTouch = false;
-                }
+                }*/
 
                 break;
 
             case MotionEvent.ACTION_MOVE:
                 x = event.getX();
                 y = event.getY();
-                if(drawingTouch && !(Zoom))
+                if(mCircleTouched)
                 {
-                    System.out.println("x in Action Move= " + x);
-                    System.out.println("y in Action Move = " + y);
-
-                    mPreviousX1 = x - drawingPicOffset_x;
-                    mPreviousY1 = y - drawingPicOffset_y;
-                    System.out.println("mPreviousX  in Action Move= " + mPreviousX );
-                    System.out.println("mPreviousY in Action Move = " + mPreviousY);
-                    mPreviousX = x;
-                    mPreviousY = y;
-                    mTriggerBitmapstop = true;
-
-                }
-
-                if(mCircleTouched) {
-                    if(x > mPreviousX2 && y > mPreviousY2)
-                    {
-                        mPreviousX = x;
-                        mPreviousY = y;
+                    Log.i("mCircleTouched", "Action Move class");
+                    if(x > mCurrentPosX3 && y > mCurrentPosY3) {
+                        mCurrentPosX = x;
+                        mCurrentPosY = y;
+                        mPreviousPosX = mCurrentPosX3;
+                        mPreviousPosY = mCurrentPosY3;
                         System.out.println("x in Action and Circle Touched= " + x);
                         System.out.println("y in Action and Circle Touched = " + y);
-                        System.out.println("mPreviousX  in Action Move touched= " + mPreviousX);
-                        System.out.println("mPreviousY in Action Move touched = " + mPreviousY);
 
-                        mTriggerBitmap = true;
+                        mTriggerDrag = true;
                         Zoom = true;
                         drawingTouch = false;
-                        mTriggerBitmapstop = false;
-
-                        //drawingTouch = true;
-                        Log.i("mCircleTouched", "Action Move class");
+                      //  mTriggerDrag = false;
                     }
                 }
 
+                else if(drawingTouch)
+                {
+                    Log.i("drawingTouch", "Action Move class");
+                    System.out.println("x in Action Move= " + x);
+                    System.out.println("y in Action Move = " + y);
+
+
+                    mCurrentPosX = x;
+                    mCurrentPosY = y;
+                    mTriggerDrag = true;
+                 //   mCircleTouched = false;//added
+                }
+                else {
+                    mTriggerDrag = false;
+                }
                 break;
             case MotionEvent.ACTION_UP:
                 x = event.getX();
                 y = event.getY();
                 Log.e("Inside Action Up" +
                         "", "In Customview() class........................");
-                if( Zoom)
-                {
+                if(Zoom && mCircleTouched) {
                     Log.e("Inside Action Up1" +
                             "", "In Customview() class........................");
-                   mPreviousX = x;
-                    mPreviousY = y;
-                //   mTriggerBitmapstop = true;
-                    mTriggerBitmapstop1 = true;
-                    drawingTouch = false;
-                    mCircleTouched = false;
-                 // mTriggerBitmapstop = false;
-                    mTriggerBitmap= false;
+                    if (x > mCurrentPosX3 && y > mCurrentPosY3)
+                    {
+                        Log.e("Inside Action Up2" +
+                                "", "In Customview() class........................");
+                        System.out.println("mCurrentPosX  in Action up= " + mCurrentPosX);
+                        System.out.println("mCurrentPosY in Action up = " + mCurrentPosY);
+                        mCurrentPosX = x;
+                        mCurrentPosY = y;
+                        mTriggerZoom = true;
+                        drawingTouch = false;
+                        mCircleTouched = false;
+                        mTriggerDrag = false;
+                    }
                 }
+
                 break;
             default:
 
@@ -502,8 +532,8 @@ public class CustomView extends View {
                         "", "In Customview() class........................");
                 drawingTouch = false;
                 touching = false;
-                mTriggerBitmapstop = false;
-                mTriggerBitmapstop1 = false;
+                mTriggerDrag = false;
+                mTriggerZoom = false;
                 mCircleTouched = false;
         }
 

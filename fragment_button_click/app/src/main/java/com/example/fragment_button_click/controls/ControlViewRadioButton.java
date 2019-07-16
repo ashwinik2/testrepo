@@ -18,11 +18,13 @@ public class ControlViewRadioButton extends ControlViewModel {
     private String mOneRadioButton,mTwoRadioButton;
     private int RADIO_BUTTON_ITEMVIEW_LIST;
     private View mView;
+public int type;
 
-    public ControlViewRadioButton() {
+    public ControlViewRadioButton(int type) {
         super();
         Log.i("RadioButtonControlView","RadioButtonControlView");
         setRadioButtonNames();
+	this.type = type;
 
     }
     public void setView(View view, final Context mContext)
@@ -55,8 +57,12 @@ public class ControlViewRadioButton extends ControlViewModel {
     {
         return RADIO_BUTTON_ITEMVIEW_LIST;
     }
-
+@Override
+    public int getListItemType() {
+        return this.type;
+    }
     public View createView(Context context) {
+        Log.i("createView","RadioButtonControlView");
         mRadioButtonView = (View) LayoutInflater.from(context)
                 .inflate(R.layout.radionbutton_itemview, null);
         setView(mRadioButtonView,context);
@@ -65,9 +71,10 @@ public class ControlViewRadioButton extends ControlViewModel {
 
     public void bindData(View itemView)
     {
+        Log.i("bindData()","RadioButtonControlView");
         mRadioButton = (RadioButton) itemView.findViewById(R.id.radioOne);
-        mRadioButton.setText(getRadioButtonNameOne());
+//        mRadioButton.setText(getRadioButtonNameOne());
         mRadioButton = (RadioButton) itemView.findViewById(R.id.radioTwo);
-        mRadioButton.setText(getRadioButtonNameTwo());
+  //      mRadioButton.setText(getRadioButtonNameTwo());
     }
 }

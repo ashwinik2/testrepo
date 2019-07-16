@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
+import android.widget.TextView;
 import com.example.fragment_button_click.R;
 
 public class ControlViewButton extends ControlViewModel {
@@ -21,12 +21,14 @@ public class ControlViewButton extends ControlViewModel {
     private View mView;
     controlButtonListener mCallback;
     private Button mButton;
-
-    public ControlViewButton(final Context context) {
+    public int type;
+    public TextView mTextView;
+    public ControlViewButton(final Context context,int type) {
         super();
         Log.i("ButtonControlView()","ButtonControlView");
         setButtonNameStart();
         mContext = context;
+	this.type = type;
 
     }
 
@@ -82,8 +84,12 @@ public class ControlViewButton extends ControlViewModel {
         return BUTTON_ITEMVIEW_LIST;
     }
 
+	@Override
+    public int getListItemType() {
+        return this.type;
+    }
     public View createView(Context context) {
-        Log.e("createView","ButtonControlView");
+        Log.e("createView()","ButtonControlView");
         mButtonView = (View) LayoutInflater.from(context)
                 .inflate(R.layout.button_itemview, null);
        setView(mButtonView, context);
@@ -92,9 +98,19 @@ public class ControlViewButton extends ControlViewModel {
 
     public void bindData(View itemView)
     {
+	    Log.e("bindData","ButtonControlView");
+        mTextView = itemView.findViewById(R.id.textview1);
         mButton = (Button) itemView.findViewById(R.id.button_start);
-        mButton.setText(getButtonNameStart());
+        if( mButton!= null){
+            Log.i("mButton  != null","bindData() ButtonControlView");
+            System.out.println("getButtonNameStart is    = " + getButtonNameStart());
+            mButton.setText(getButtonNameStart());
+        }
         mButton = (Button) itemView.findViewById(R.id.button_stop);
-        mButton.setText(getButtonNameStop());
-    }
+        if( mButton != null){
+            Log.i("mButton  != null","bindData() ButtonControlView");
+            System.out.println("getButtonNameStart is    = " + getButtonNameStop());
+            mButton.setText(getButtonNameStop());
+        }
+	   }
 }

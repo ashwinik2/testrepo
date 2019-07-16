@@ -8,18 +8,18 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.graphics.Color;
 import com.example.fragment_button_click.R;
 
-public class ControlViewHolder extends RecyclerView.ViewHolder {
+public class ControlViewHolder extends RecyclerView.ViewHolder implements
+        ItemTouchHelperViewHolder {
 
     OnStartDragListener mDragStartListener;
 
-     public ControlViewHolder(final View itemView, final Context context, OnStartDragListener dragListener) {
+     public ControlViewHolder(final View itemView, final Context context) {
 
          super(itemView);
          Log.i("ControlViewHolder()","ControlViewHolder");
-         mDragStartListener = dragListener;
          itemView.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
@@ -27,13 +27,20 @@ public class ControlViewHolder extends RecyclerView.ViewHolder {
              }
          });
 
-
-
          }
 
-     public void bindData(ControlViewModel viewModel, int position) {
+     public void bindData(ControlViewModel viewModel) {
 
          Log.i("bindData()","ControlViewHolder");
          viewModel.bindData(itemView);
+    }
+@Override
+    public void onItemSelected() {
+        itemView.setBackgroundColor(Color.LTGRAY);
+    }
+
+    @Override
+    public void onItemClear() {
+        itemView.setBackgroundColor(0);
     }
 }

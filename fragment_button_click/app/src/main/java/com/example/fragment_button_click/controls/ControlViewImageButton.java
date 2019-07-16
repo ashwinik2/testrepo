@@ -16,12 +16,14 @@ public class ControlViewImageButton extends ControlViewModel {
     private View mView;
     private ImageButton mImageButton;
     private int IMAGEBUTTON_ITEMVIEW_LIST;
-
-    public ControlViewImageButton(final Context context)
+	public int type;
+	
+    public ControlViewImageButton(final Context context,int type)
     {
         super();
         Log.i("ControlViewImageButon()","ControlViewImageButton");
         mContext = context;
+	this.type = type;
 
     }
 
@@ -36,6 +38,10 @@ public class ControlViewImageButton extends ControlViewModel {
         return IMAGEBUTTON_ITEMVIEW_LIST;
     }
 
+	@Override
+    public int getListItemType() {
+        return this.type;
+    }	
     public View createView(Context context) {
         Log.e("createView","ControlViewImageButton");
         mImageButtonView = (View) LayoutInflater.from(context)

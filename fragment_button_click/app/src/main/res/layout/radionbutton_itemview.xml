@@ -2,7 +2,9 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="10dp">
+    android:clickable="true"
+    android:paddingTop="30dp"
+    android:paddingBottom="30dp">
 
 
     <RadioGroup

@@ -75,10 +75,10 @@ public class ControlViewContainer extends Fragment implements OnStartDragListene
         switch (controlmode)
         {
             case CONTROL_MODE0:
-                ControlViewModelList.add(new ControlViewButton(mContext));
-		ControlViewModelList.add(new ControlViewFilterButton(mContext));
-                ControlViewModelList.add(new ControlViewText(String.format(Locale.US, "Text Item View", 1)));
-                ControlViewModelList.add(new ControlViewRadioButton());
+                ControlViewModelList.add(new ControlViewButton(mContext,0));
+		ControlViewModelList.add(new ControlViewFilterButton(mContext,1));
+                ControlViewModelList.add(new ControlViewText(String.format(Locale.US, "Text Item View", 1),2));
+                ControlViewModelList.add(new ControlViewRadioButton(3));
               /*  ControlViewModelList.add(new ControlViewText(String.format(Locale.US, "Text Item View", 1)));
                 ControlViewModelList.add(new ControlViewText(String.format(Locale.US, "Text Item View", 1)));
                 ControlViewModelList.add(new ControlViewText(String.format(Locale.US, "Text Item View", 1)));
@@ -86,8 +86,8 @@ public class ControlViewContainer extends Fragment implements OnStartDragListene
                 break;
 
             case CONTROL_MODE1:
-                ControlViewModelList.add(new ControlViewImageButton( mContext));
-                ControlViewModelList.add(new ControlViewCheckBox( mContext));
+                ControlViewModelList.add(new ControlViewImageButton( mContext,0));
+                ControlViewModelList.add(new ControlViewCheckBox( mContext,1));
                 break;
         }
             
@@ -96,7 +96,7 @@ public class ControlViewContainer extends Fragment implements OnStartDragListene
 
     @Override
     public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
-      //  mTouchHelper.startDrag(viewHolder);
+        mTouchHelper.startDrag(viewHolder);
     }
 
  }

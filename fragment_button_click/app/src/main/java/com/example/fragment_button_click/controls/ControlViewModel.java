@@ -17,6 +17,7 @@ public abstract class ControlViewModel {
         {
 
         }
+	abstract int getListItemType();
 }
 
 

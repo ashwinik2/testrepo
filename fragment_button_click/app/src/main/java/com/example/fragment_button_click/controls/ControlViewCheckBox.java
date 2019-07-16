@@ -18,14 +18,15 @@ public class ControlViewCheckBox extends ControlViewModel {
     private View mView;
     private CheckBox mCheckBox;
     private int CHECKBOX_ITEMVIEW_LIST;
+	public int type;
 
-    public ControlViewCheckBox(final Context context)
+    public ControlViewCheckBox(final Context context,int type)
     {
         super();
         Log.i("ControlViewCheckBox()","ControlViewCheckBox");
         setCheckBoxName();
         mContext = context;
-
+	this.type = type;
     }
 
     public void setView(View view,final Context mContext){
@@ -53,9 +54,14 @@ public class ControlViewCheckBox extends ControlViewModel {
     {
         return CHECKBOX_ITEMVIEW_LIST;
     }
+    
+    @Override
+    public int getListItemType() {
+        return this.type;
+    }
 
     public View createView(Context context) {
-        Log.e("createView","ControlViewCheckBox");
+        Log.e("createView()","ControlViewCheckBox");
         mCheckBoxView = (View) LayoutInflater.from(context)
                 .inflate(R.layout.checkbox_itemview, null);
         setView(mCheckBoxView, context);
@@ -63,10 +69,16 @@ public class ControlViewCheckBox extends ControlViewModel {
     }
 
     public void bindData(View itemView)
-    {
-        mCheckBox = (CheckBox) itemView.findViewById(R.id.checkBox1);
-        mCheckBox.setText(getCheckBoxYes());
+    { 
+	mCheckBox = (CheckBox) itemView.findViewById(R.id.checkBox1);
+        if(mCheckBox != null)
+        {
+            mCheckBox.setText(getCheckBoxYes());
+        }
         mCheckBox= (CheckBox) itemView.findViewById(R.id.checkBox2);
-        mCheckBox.setText(getcheckBoxNo());
+        if(mCheckBox != null)
+        {
+            mCheckBox.setText(getcheckBoxNo());
+        }
     }
 }

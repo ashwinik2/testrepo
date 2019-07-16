@@ -16,10 +16,13 @@ public class ControlViewText extends ControlViewModel {
     private int TEXT_ITEMVIEW_LIST;
     private View mView;
     private TextView mSimpleTextView;
+    public int type;
 
-    public ControlViewText(@NonNull final String simpleText) {
+    public ControlViewText(@NonNull final String simpleText,int type) {
         super();
+        Log.i("ControlViewText()","TextControlView");
         setSimpleText(simpleText);
+	this.type = type;
     }
     public void setView(View view, final Context mContext){
         Log.i("setview()","TextControlView");
@@ -41,14 +44,25 @@ public class ControlViewText extends ControlViewModel {
         this.mSimpleText = simpleText;
     }
 
+@Override
+    public int getListItemType() {
+        return this.type;
+    }	
     public View  createView(Context context) {
+        Log.i("createView()","TextControlView");
         mTextView = (View) LayoutInflater.from(context)
                 .inflate(R.layout.text_itemview, null);
         setView(mTextView,context);
         return mTextView;
     }
-    public void bindData(View itemView) {
+    public void bindData(View itemView) 
+    {
+    Log.i("TextControlViewbinddata","TextControlView");
         mSimpleTextView = (TextView) itemView.findViewById(R.id.text1);
-        mSimpleTextView.setText(getSimpleText());
+        if(mSimpleTextView != null){
+            Log.i("mSimpleTextView != null","bindData() TextControlView");
+            System.out.println("fromPosition in else is    = " + getSimpleText());
+            mSimpleTextView.setText(getSimpleText());
+        }
     }
 }

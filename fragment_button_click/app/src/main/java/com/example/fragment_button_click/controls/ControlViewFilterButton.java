@@ -20,12 +20,14 @@ public class ControlViewFilterButton extends ControlViewModel{
     private View mView;
     controlButtonFilterListener mCallback;
     private Button mButton;
+	public int type;
 
-    public ControlViewFilterButton(final Context context) {
+    public ControlViewFilterButton(final Context context,int type) {
         super();
-        Log.i("ButtonFilterControlView()","ButtonFilterControlView");
+        Log.i("ControlViewFilterButton()","ButtonFilterControlView");
         setButtonNameStart();
         mContext = context;
+	this.type = type;
 
     }
 
@@ -96,9 +98,12 @@ public class ControlViewFilterButton extends ControlViewModel{
     {
         return BUTTON_ITEMVIEW_LIST;
     }
-
+@Override
+    public int getListItemType() {
+        return this.type;
+    }
     public View createView(Context context) {
-        Log.e("createView","FilterButtonControlView");
+        Log.e("createView()","FilterButtonControlView");
         mButtonView = (View) LayoutInflater.from(context)
                 .inflate(R.layout.filterbutton_itemview, null);
         setView(mButtonView, context);
@@ -106,12 +111,27 @@ public class ControlViewFilterButton extends ControlViewModel{
     }
 
     public void bindData(View itemView)
-    {
+    {  Log.e("bindData", "FilterButtonControlView");
         mButton = (Button) itemView.findViewById(R.id.button_blur);
-        mButton.setText(getButtonNameBlur());
+        if( mButton  == null){
+            Log.i("mButton == null","bindData() FilterButtonControlView\"");
+            System.out.println("getButtonNameBlur is    = " + getButtonNameBlur());
+            mButton.setText("BLUR");
+            mButton.setText(getButtonNameBlur());
+        }
         mButton = (Button) itemView.findViewById(R.id.button_sharp);
-        mButton.setText(getButtonNameSharp());
+        if (mButton != null) {
+            Log.i("mButton ! != null","bindData() FilterButtonControlView");
+            System.out.println("getButtonNameSharp is    = " + getButtonNameSharp());
+            mButton.setText("SHARP");
+            mButton.setText(getButtonNameSharp());
+        }
         mButton = (Button) itemView.findViewById(R.id.button_edge_det);
-        mButton.setText(getButtonNameEdgeDet());
+        if (mButton != null) {
+            Log.i("mButton != null","bindData() FilterButtonControlView");
+            System.out.println("getButtonNameEdgeDet is    = " + getButtonNameEdgeDet());
+            mButton.setText("EDGEDET");
+            mButton.setText(getButtonNameEdgeDet());
+        }
     }
 }

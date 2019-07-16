@@ -27,7 +27,7 @@ void SimpleOpenCV ::CreateMat(unsigned char*mFrameBuffer,int rows, int cols,cons
 	DRLOGF("[mFrameSize in simpleOpenCV %d", mFrameSize);
 	
 
-	sleep(5);
+	sleep(1);
 	__android_log_print(ANDROID_LOG_INFO, __FUNCTION__,"simpleOpenCV()::CreateMat()");
 //	Mat image = imread("/home/megan/work/8096_Open-Q_820_Android_BSP-P_v5.0/Source_Package/APQ8096_LA.UM.7.5.r1-03100-8x96.0_P_v5.0/device/qcom/msm8996/apps/fragment_button_click/jni/src/cat.jpeg",IMREAD_COLOR);
 	Mat srcimg = imread("/system/lib64/cat.jpeg",IMREAD_COLOR);
